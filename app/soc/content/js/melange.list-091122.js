@@ -38,9 +38,46 @@
     */
   var $m = melange.logging.debugDecorator(melange.list);
 
-/*  melange.error.createErrors([
-    "chartNotExistent",
-    "containerIsNull"
-  ]);*/
+  melange.error.createErrors([
+    "listIndexNotValid",
+    "divNotExistent"
+  ]);
+
+  $m.loadList = function (div,idx) {
+    var idx = parseInt(idx);
+    var start = "";
+    if (isNaN(idx) || idx<0) {
+      throw new melange.error.listIndexNotValid("List index "+idx+" is not valid");
+    }
+    jQuery(
+      function () {
+        if (jQuery("#"+div).length===0) {
+          throw new melange.error.divNotExistent("Div "+div+" is not existent");
+        }
+        setTimeout(
+          function () {
+            jQuery.ajax({
+              async: false,
+              cache: false,
+              url: [
+                window.location.href,
+                "?fmt=json&count=50",
+                (start===""?"":"&start="+start),
+                "&idx=",idx
+              ].join(""),
+              timeout: 10000,
+              success: function (data) {
+                jQuery("#"+div).html("List number "+idx+" loaded");
+              },
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                jQuery("#"+div).html("Error retrieving list number "+idx);
+              }
+            });
+          },
+          0
+        );
+      }
+    );
+  }
 
 }());
