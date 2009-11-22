@@ -122,6 +122,9 @@ limitations under the License.
   <script type="text/javascript">
     var xsrf_token = '{{xsrf_token}}';
   </script>
+  {% if uses_melangelist %}
+  <script type="text/javascript" src="/soc/content/js/melange.list-091122.js"></script>
+  {% endif %}
 {% endblock %}
 </head>
 
