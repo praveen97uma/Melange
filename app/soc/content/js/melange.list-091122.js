@@ -15,6 +15,9 @@
 /**
  * @author <a href="mailto:fadinlight@gmail.com">Mario Ferraro</a>
  */
+/*
+  TODO: view filter toolbar and pager
+*/
 (function () {
   /** @lends melange.list */
 
@@ -46,85 +49,304 @@
 
   var dummy_source = [];
   dummy_source[0] = {
-    "": [
-      {
-        "id": "test",
-        "name": "Test Example",
-        "program_owner": "Google"
-      },
-      {
-        "id": "test2",
-        "name": "Test Example",
-        "program_owner": "GooglePlex"
-      }
-    ]
+    "configuration": {
+      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colModel": [
+        {name:"key", index: "key", resizable: true},
+        {name:"link_id", index: "link_id", resizable: true},
+        {name:"name", index: "name", resizable: true},
+        {name:"program_owner", index: "program_owner", resizable: true}
+      ],
+      rowNum: 4,
+      rowList: [4,8],
+      autowidth: true,
+      sortname: "link_id",
+      sortorder: "asc"
+    },
+    "data": {
+      "": [
+        {
+          "key": "key_test",
+          "link_id": "test",
+          "name": "Test Example",
+          "program_owner": "Google"
+        },
+        {
+          "key": "key_test2",
+          "link_id": "test2",
+          "name": "Test Example",
+          "program_owner": "GooglePlex"
+        }
+      ],
+      "key_test2": [
+        {
+          "key": "key_test2bis",
+          "link_id": "test2bis",
+          "name": "Test Example Loaded Incrementally",
+          "program_owner": "Google"
+        },
+        {
+          "key": "key_test2tris",
+          "link_id": "test2tris",
+          "name": "Test Example Loaded Incrementally",
+          "program_owner": "GooglePlex"
+        }
+      ]
+    }
   };
   dummy_source[1] = {
-    "": [
-      {
-        "id": "test3",
-        "name": "Mentor Test Example",
-        "program_owner": "melange"
-      },
-      {
-        "id": "test4",
-        "name": "Mentor Test Example",
-        "program_owner": "google1"
-      }
-    ],
-    "test4": [
-      {
-        "id": "test5",
-        "name": "Mentor Test Example Loaded Incrementally",
-        "program_owner": "google1"
-      }
-    ],
-    "test5": [
-      {
-        "id": "test6",
-        "name": "Mentor Test Example Loaded Incrementally 2",
-        "program_owner": "google1"
-      }
-    ]
+    "configuration": {
+      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colModel": [
+        {name:"key", index: "key", resizable: true},
+        {name:"link_id", index: "link_id", resizable: true},
+        {name:"name", index: "name", resizable: true},
+        {name:"program_owner", index: "program_owner", resizable: true}
+      ],
+      rowNum: 4,
+      rowList: [4,8],
+      autowidth: true,
+      sortname: "link_id",
+      sortorder: "asc"
+    },
+    "data": {
+      "": [
+        {
+          "key": "key_test3",
+          "link_id": "test3",
+          "name": "Mentor Test Example",
+          "program_owner": "melange"
+        },
+        {
+          "key": "key_test4",
+          "link_id": "test4",
+          "name": "Mentor Test Example",
+          "program_owner": "google1"
+        }
+      ],
+      "key_test4": [
+        {
+          "key": "key_test5",
+          "link_id": "test5",
+          "name": "Mentor Test Example Loaded Incrementally",
+          "program_owner": "google1"
+        }
+      ],
+      "key_test5": [
+        {
+          "key": "key_test6",
+          "link_id": "test6",
+          "name": "Mentor Test Example Loaded Incrementally 2",
+          "program_owner": "google1"
+        }
+      ]
+    }
   };
   dummy_source[2] = {
-    "": [
-      {
-        "id": "test7",
-        "name": "Admin Test Example",
-        "program_owner": "melange"
-      },
-      {
-        "id": "test8",
-        "name": "Admin Test Example",
-        "program_owner": "google1"
-      }
-    ],
-    "test8": [
-      {
-        "id": "test9",
-        "name": "Admin Test Example Loaded Incrementally",
-        "program_owner": "google1"
-      }
-    ]
+    "configuration": {
+      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colModel": [
+        {name:"key", index: "key", resizable: true},
+        {name:"link_id", index: "link_id", resizable: true},
+        {name:"name", index: "name", resizable: true},
+        {name:"program_owner", index: "program_owner", resizable: true}
+      ],
+      rowNum: 4,
+      rowList: [4,8],
+      autowidth: true,
+      sortname: "link_id",
+      sortorder: "asc"
+    },
+    "data": {
+      "": [
+        {
+          "key": "key_test7",
+          "link_id": "test7",
+          "name": "Admin Test Example",
+          "program_owner": "melange"
+        },
+        {
+          "key": "key_test8",
+          "link_id": "test8",
+          "name": "Admin Test Example",
+          "program_owner": "google1"
+        }
+      ],
+      "key_test8": [
+        {
+          "key": "key_test9",
+          "link_id": "test9",
+          "name": "Admin Test Example Loaded Incrementally",
+          "program_owner": "google1"
+        }
+      ]
+    }
   };
   dummy_source[3] = {
-    "": [
-      {
-        "id": "test10",
-        "name": "Student Test Example",
-        "program_owner": "Google"
-      },
-      {
-        "id": "test11",
-        "name": "Student Test Example",
-        "program_owner": "GooglePlex"
-      }
-    ]
+    "configuration": {
+      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colModel": [
+        {name:"key", index: "key", resizable: true},
+        {name:"link_id", index: "link_id", resizable: true},
+        {name:"name", index: "name", resizable: true},
+        {name:"program_owner", index: "program_owner", resizable: true}
+      ],
+      rowNum: 4,
+      rowList: [4,8],
+      autowidth: true,
+      sortname: "link_id",
+      sortorder: "asc"
+    },
+    "data": {
+      "": [
+        {
+          "key": "key_test10",
+          "link_id": "test10",
+          "name": "Student Test Example",
+          "program_owner": "Google"
+        },
+        {
+          "key": "key_test11",
+          "link_id": "test11",
+          "name": "Student Test Example",
+          "program_owner": "GooglePlex"
+        }
+      ]
+    }
   };
 
 
   var list_objects = [];
+
+  var retrieveData = function (postdata) {
+    var my_index = postdata.my_index;
+    var original_data = list_objects[my_index]["data"]
+    var temp_data = original_data;
+
+    // Process search filter
+    if (postdata._search) {
+      // Process advanced search filter if present
+      if (postdata.searchField!==undefined && postdata.searchField!=="") {
+        var searches = {
+          "eq": { // equals
+            method: "equals",
+            not: false
+          },
+          "ne": { // not equals
+            method: "equals",
+            not: true
+          },
+          "lt": { // less
+            method: "less",
+            not: false
+          },
+          "le": { // less or equal
+            method: "lessEquals",
+            not: false
+          },
+          "gt": { // greater
+            method: "greater",
+            not: false
+          },
+          "ge": { // greater or equal
+            method: "greaterEquals",
+            not: false
+          },
+          "bw": { // begins with
+            method: "startsWith",
+            not: false
+          },
+          "bn": { // does not begins with
+            method: "startsWith",
+            not: true
+          },
+          "ew": { // ends with
+            method: "endsWith",
+            not: false
+          },
+          "en": { // does not end with
+            method: "endsWith",
+            not: true
+          },
+          "cn": { // contains
+            method: "contains",
+            not: false
+          },
+          "nc": { // does not contain
+            method: "contains",
+            not: true
+          }
+        }
+        // just because I don't know what to use for in and is not in, skipping
+        if (postdata.searchOper !== "in" || postdata.searchOper !== "ni") {
+          if (searches[postdata.searchOper].not) {
+            temp_data = jLinq.from(temp_data).not()[searches[postdata.searchOper].method](postdata.searchField,postdata.searchString).select();
+          }
+          else {
+            temp_data = jLinq.from(temp_data)[searches[postdata.searchOper].method](postdata.searchField,postdata.searchString).select();
+          }
+        }
+      }
+      // otherwise process simple filter
+      else if (original_data[0]!==undefined) {
+        jQuery.each(original_data[0], function (element_key, element_value) {
+          if (postdata[element_key]!==undefined) {
+            temp_data = jLinq.from(temp_data).contains(element_key,postdata[element_key]).select();
+          }
+        });
+      }
+    }
+
+    // Process index/sorting filters
+    var sort_column = postdata.sidx;
+    var order_type = postdata.sord;
+    if (order_type==="asc") {
+      order_type = "";
+    }
+    else {
+      order_type = "-";
+    }
+
+    temp_data = jLinq.from(temp_data).orderBy(order_type+sort_column).select();
+
+    var offset_start = (postdata.page-1)*postdata.rows;
+    var offset_end = (postdata.page*postdata.rows)-1;
+    var json_to_return = {
+      "page": postdata.page,
+      "total": temp_data.length===0 ? 0 : Math.ceil(temp_data.length/postdata.rows),
+      "records": temp_data.length,
+      "rows": []
+    };
+    for (var i=offset_start; i<=offset_end; i++) {
+      if (temp_data[i]===undefined) continue;
+      var my_cell = [];
+      if (original_data[0]!==undefined) {
+        jQuery.each(original_data[0], function (element_key, element_value) {
+          my_cell.push(temp_data[i][element_key]);
+        });
+      }
+
+      json_to_return.rows.push({
+        "key": temp_data[i]["key"],
+        "cell": my_cell
+      });
+    }
+
+    var thegrid = jQuery("#"+list_objects[my_index]["jqgrid"]["id"])[0];
+    thegrid.addJSONData(json_to_return);
+  }
+
+
+  var default_jqgrid_options = {
+    datatype: retrieveData,
+    viewrecords: true
+  }
+
+  var default_pager_options = {
+    edit:false,
+    add:false,
+    del:false
+  }
 
   $m.loadList = function (div,idx) {
     var idx = parseInt(idx);
@@ -145,8 +367,27 @@
           function () {
             var start = "";
             list_objects[idx]["data"] = [];
-
             //create jqgrid object
+            var initial_div = jQuery("#"+div);
+            var table_id = "jqgrid_"+div;
+            var pager_id = "jqgrid_pager_"+div;
+            initial_div.replaceWith([
+              '<table id="'+table_id+'"',
+              ' cellpadding="0" cellspacing="0"',
+              '></table>',
+              '<div id="'+pager_id+'"',
+              ' style="text-align:center"',
+              '></div>'
+            ].join(""));
+
+            list_objects[idx]["jqgrid"] = {};
+            list_objects[idx]["jqgrid"]["id"] = table_id;
+            list_objects[idx]["jqgrid"]["options"] =
+              jQuery.extend(default_jqgrid_options,{pager: jQuery("#"+pager_id)});
+            list_objects[idx]["pager"] = {};
+            list_objects[idx]["pager"]["id"] = pager_id;
+            list_objects[idx]["pager"]["options"] = default_pager_options;
+
             var looping = function () {
               jQuery.ajax({
                 async: false,
@@ -160,18 +401,50 @@
                 timeout: 10000,
                 success: function (data) {
                   jQuery("#"+div).html("List number "+idx+" loaded");
-                  console.debug("I'm idx "+idx+" with start "+start);
-                  if (dummy_source[idx][start]!==undefined) {
-                    var my_data = dummy_source[idx][start];
-                    list_objects[idx]["data"].push(my_data);
-                    //trigger jqgrid object
+                  //console.debug("I'm idx "+idx+" with start "+start);
+                  if (dummy_source[idx]["data"][start]!==undefined) {
+                    //console.debug("data present, including");
+                    list_objects[idx]["configuration"] = dummy_source[idx]["configuration"];
+                    var my_data = dummy_source[idx]["data"][start];
+                    jQuery.each(my_data, function () {
+                      list_objects[idx]["data"].push(this);
+                    });
 
+                    //if jqGrid is not present, create it
+                    if (list_objects[idx]["jqgrid"]["object"] === undefined) {
+                      var extended_config = list_objects[idx]["configuration"] || {};
+                      //giving index of the table in post data
+                      jQuery.extend(extended_config,{postData: {my_index: idx}});
+
+
+                      var table_id = list_objects[idx]["jqgrid"]["id"];
+                      var jqgrid_options = list_objects[idx]["jqgrid"]["options"];
+
+                      var pager_id = list_objects[idx]["pager"]["id"];
+                      var pager_options = list_objects[idx]["pager"]["options"];
+
+                      jQuery("#"+table_id)
+                        .jqGrid(
+                          jQuery.extend(jqgrid_options,extended_config)
+                        )
+                        .navGrid(
+                          "#"+pager_id,
+                          pager_options
+                        );
+                      jQuery("#"+table_id).jqGrid('filterToolbar',{});
+                      list_objects[idx]["jqgrid"]["object"] = jQuery("#"+table_id);
+                    }
+                    else {
+                      //else trigger new data in jqgrid object
+                      list_objects[idx]["jqgrid"]["object"].trigger("reloadGrid");
+                    }
                     //call next iteration
-                    start = my_data[(my_data.length-1)].id;
+                    start = my_data[(my_data.length-1)].key;
                     setTimeout(looping, 100);
                   }
                   else {
                     //can call a callback if needed
+                    //console.debug("void, skipping");
                   }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -189,8 +462,8 @@
       }
     );
     function callback(idx) {
-       console.debug("callback called for index "+idx);
-       console.dir(list_objects[idx]["data"]);
+       //console.debug("callback called for index "+idx);
+       //console.dir(list_objects[idx]["data"]);
     }
   }
 }());
