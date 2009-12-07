@@ -40,44 +40,69 @@
 
   melange.error.createErrors([
     "listIndexNotValid",
-    "divNotExistent"
+    "divNotExistent",
+    "indexAlreadyExistent"
   ]);
+
+  var list_objects = [];
 
   $m.loadList = function (div,idx) {
     var idx = parseInt(idx);
-    var start = "";
     if (isNaN(idx) || idx<0) {
       throw new melange.error.listIndexNotValid("List index "+idx+" is not valid");
+    }
+    if (list_objects[idx]) {
+      throw new melange.error.indexAlreadyExistent("Index "+idx+" is already existent");
+    } else {
+      list_objects[idx] = {};
     }
     jQuery(
       function () {
         if (jQuery("#"+div).length===0) {
           throw new melange.error.divNotExistent("Div "+div+" is not existent");
         }
-        setTimeout(
+        list_objects[idx] = (
           function () {
-            jQuery.ajax({
-              async: false,
-              cache: false,
-              url: [
-                window.location.href,
-                "?fmt=json&count=50",
-                (start===""?"":"&start="+start),
-                "&idx=",idx
-              ].join(""),
-              timeout: 10000,
-              success: function (data) {
-                jQuery("#"+div).html("List number "+idx+" loaded");
-              },
-              error: function (XMLHttpRequest, textStatus, errorThrown) {
-                jQuery("#"+div).html("Error retrieving list number "+idx);
-              }
-            });
-          },
-          0
+            var start = 0;
+            list_objects[idx]["data"] = [];
+            var looping = function () {
+              jQuery.ajax({
+                async: false,
+                cache: false,
+                url: [
+                  window.location.href,
+                  "?fmt=json&count=50",
+                  (start===0?"":"&start="+start),
+                  "&idx=",idx
+                ].join(""),
+                timeout: 10000,
+                success: function (data) {
+                  jQuery("#"+div).html("List number "+idx+" loaded");
+                  console.debug("I'm idx "+idx+" with start "+start);
+                    if ((idx===1 && start < 200)||(idx===2 && start < 150)) {
+                      start += 50;
+                      list_objects[idx]["data"].push("iteration for index "+idx+" with start: "+start);
+                      setTimeout(looping, 100);
+                    }
+                    else callback(idx);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  jQuery("#"+div).html("Error retrieving list number "+idx);
+                }
+              });
+            }
+            return setTimeout(
+              looping,
+              0
+            );
+          }
         );
+        list_objects[idx]();
       }
     );
+    function callback(idx) {
+       console.debug("callback called for index "+idx);
+       console.dir(list_objects[idx]["data"]);
+    }
   }
-
 }());
