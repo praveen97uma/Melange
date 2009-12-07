@@ -44,6 +44,86 @@
     "indexAlreadyExistent"
   ]);
 
+  var dummy_source = [];
+  dummy_source[0] = {
+    "": [
+      {
+        "id": "test",
+        "name": "Test Example",
+        "program_owner": "Google"
+      },
+      {
+        "id": "test2",
+        "name": "Test Example",
+        "program_owner": "GooglePlex"
+      }
+    ]
+  };
+  dummy_source[1] = {
+    "": [
+      {
+        "id": "test3",
+        "name": "Mentor Test Example",
+        "program_owner": "melange"
+      },
+      {
+        "id": "test4",
+        "name": "Mentor Test Example",
+        "program_owner": "google1"
+      }
+    ],
+    "test4": [
+      {
+        "id": "test5",
+        "name": "Mentor Test Example Loaded Incrementally",
+        "program_owner": "google1"
+      }
+    ],
+    "test5": [
+      {
+        "id": "test6",
+        "name": "Mentor Test Example Loaded Incrementally 2",
+        "program_owner": "google1"
+      }
+    ]
+  };
+  dummy_source[2] = {
+    "": [
+      {
+        "id": "test7",
+        "name": "Admin Test Example",
+        "program_owner": "melange"
+      },
+      {
+        "id": "test8",
+        "name": "Admin Test Example",
+        "program_owner": "google1"
+      }
+    ],
+    "test8": [
+      {
+        "id": "test9",
+        "name": "Admin Test Example Loaded Incrementally",
+        "program_owner": "google1"
+      }
+    ]
+  };
+  dummy_source[3] = {
+    "": [
+      {
+        "id": "test10",
+        "name": "Student Test Example",
+        "program_owner": "Google"
+      },
+      {
+        "id": "test11",
+        "name": "Student Test Example",
+        "program_owner": "GooglePlex"
+      }
+    ]
+  };
+
+
   var list_objects = [];
 
   $m.loadList = function (div,idx) {
@@ -63,8 +143,10 @@
         }
         list_objects[idx] = (
           function () {
-            var start = 0;
+            var start = "";
             list_objects[idx]["data"] = [];
+
+            //create jqgrid object
             var looping = function () {
               jQuery.ajax({
                 async: false,
@@ -72,19 +154,25 @@
                 url: [
                   window.location.href,
                   "?fmt=json&count=50",
-                  (start===0?"":"&start="+start),
+                  (start===""?"":"&start="+start),
                   "&idx=",idx
                 ].join(""),
                 timeout: 10000,
                 success: function (data) {
                   jQuery("#"+div).html("List number "+idx+" loaded");
                   console.debug("I'm idx "+idx+" with start "+start);
-                    if ((idx===1 && start < 200)||(idx===2 && start < 150)) {
-                      start += 50;
-                      list_objects[idx]["data"].push("iteration for index "+idx+" with start: "+start);
-                      setTimeout(looping, 100);
-                    }
-                    else callback(idx);
+                  if (dummy_source[idx][start]!==undefined) {
+                    var my_data = dummy_source[idx][start];
+                    list_objects[idx]["data"].push(my_data);
+                    //trigger jqgrid object
+
+                    //call next iteration
+                    start = my_data[(my_data.length-1)].id;
+                    setTimeout(looping, 100);
+                  }
+                  else {
+                    //can call a callback if needed
+                  }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                   jQuery("#"+div).html("Error retrieving list number "+idx);
