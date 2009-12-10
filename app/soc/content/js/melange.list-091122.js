@@ -382,8 +382,13 @@
 
             list_objects[idx]["jqgrid"] = {};
             list_objects[idx]["jqgrid"]["id"] = table_id;
+            /* This passage is necessary because otherwise default_jqgrid_options
+               has side effect over the configuration of single tables
+               e.g.: pager div name is always the last one
+            */
+            var cloned_options = jQuery.extend({},default_jqgrid_options);
             list_objects[idx]["jqgrid"]["options"] =
-              jQuery.extend(default_jqgrid_options,{pager: jQuery("#"+pager_id)});
+              jQuery.extend(cloned_options,{pager: jQuery("#"+pager_id)});
             list_objects[idx]["pager"] = {};
             list_objects[idx]["pager"]["id"] = pager_id;
             list_objects[idx]["pager"]["options"] = default_pager_options;
@@ -415,7 +420,6 @@
                       var extended_config = list_objects[idx]["configuration"] || {};
                       //giving index of the table in post data
                       jQuery.extend(extended_config,{postData: {my_index: idx}});
-
 
                       var table_id = list_objects[idx]["jqgrid"]["id"];
                       var jqgrid_options = list_objects[idx]["jqgrid"]["options"];
