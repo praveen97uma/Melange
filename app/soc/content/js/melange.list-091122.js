@@ -432,29 +432,32 @@
                           jQuery.extend(jqgrid_options,extended_config)
                         )
                         .jqGrid(
+                          // show pager
                           "navGrid",
                           "#"+pager_id,
                           pager_options
+                        ).jqGrid(
+                          // show button to hide/show columns
+                          "navButtonAdd",
+                          "#"+pager_id,
+                          {
+                            caption: "",
+                            buttonicon: "ui-icon-calculator",
+                            onClickButton: function () {
+                              jQuery("#"+table_id).setColumns({
+                                colnameview: false,
+                                jqModal: true,
+                                ShrinkToFit: true
+                              });
+                              return false;
+                            },
+                            position: "last",
+                            title: "Show/Hide Columns",
+                            cursor: "pointer"
+                          }
                         );
                       jQuery("#"+table_id).jqGrid('filterToolbar',{});
                       list_objects[idx]["jqgrid"]["object"] = jQuery("#"+table_id);
-                      // Create button to show/hide columns
-                      // TODO: port this into the navbar, see navButtonAdd
-                      jQuery("#"+table_id).before([
-                        '<button id="showcolumn_',
-                        table_id,
-                        '>Show/Hide Columns</button>'
-                      ].join(""));
-                      jQuery("#showcolumn_"+table_id).click(
-                        function () {
-                          jQuery("#"+table_id).setColumns({
-                            colnameview: false,
-                            jqModal: true,
-                            ShrinkToFit: true
-                          });
-                          return false;
-                        }
-                      );
                     }
                     else {
                       //else trigger new data in jqgrid object
