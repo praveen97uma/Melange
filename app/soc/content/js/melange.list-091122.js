@@ -437,6 +437,23 @@
                         );
                       jQuery("#"+table_id).jqGrid('filterToolbar',{});
                       list_objects[idx]["jqgrid"]["object"] = jQuery("#"+table_id);
+                      // Create button to show/hide columns
+                      // TODO: port this into the navbar, see navButtonAdd
+                      jQuery("#"+table_id).before([
+                        '<button id="showcolumn_',
+                        table_id,
+                        '>Show/Hide Columns</button>'
+                      ].join(""));
+                      jQuery("#showcolumn_"+table_id).click(
+                        function () {
+                          jQuery("#"+table_id).setColumns({
+                            colnameview: false,
+                            jqModal: true,
+                            ShrinkToFit: true
+                          });
+                          return false;
+                        }
+                      );
                     }
                     else {
                       //else trigger new data in jqgrid object
