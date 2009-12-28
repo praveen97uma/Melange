@@ -431,7 +431,8 @@
                         .jqGrid(
                           jQuery.extend(jqgrid_options,extended_config)
                         )
-                        .navGrid(
+                        .jqGrid(
+                          "navGrid",
                           "#"+pager_id,
                           pager_options
                         );
