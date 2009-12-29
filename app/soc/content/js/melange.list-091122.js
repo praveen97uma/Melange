@@ -15,9 +15,6 @@
 /**
  * @author <a href="mailto:fadinlight@gmail.com">Mario Ferraro</a>
  */
-/*
-  TODO: view filter toolbar and pager
-*/
 (function () {
   /** @lends melange.list */
 
@@ -96,6 +93,12 @@
           "link_id": "test2tris",
           "name": "Test Example Loaded Incrementally",
           "program_owner": "GooglePlex"
+        },
+        {
+          "key": "key_2ndpage",
+          "link_id": "test2ndpage",
+          "name": "Test Example 2nd page",
+          "program_owner": "Google"
         }
       ]
     }
