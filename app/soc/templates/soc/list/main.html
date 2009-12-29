@@ -2,11 +2,11 @@ First example
 <script type="text/javascript">
   jQuery(
     function () {
-      melange.list.loadList("melangeList{% ifequal list.description "Your roles as Program Administrator."%}0{% endifequal %}{% ifequal list.description "Your roles as Mentor."%}1{% endifequal %}{% ifequal list.description "Your roles as Organization Admin."%}2{% endifequal %}{% ifequal list.description "Your roles as Student."%}3{% endifequal %}",{% ifequal list.description "Your roles as Program Administrator."%}0{% endifequal %}{% ifequal list.description "Your roles as Mentor."%}1{% endifequal %}{% ifequal list.description "Your roles as Organization Admin."%}2{% endifequal %}{% ifequal list.description "Your roles as Student."%}3{% endifequal %});
+      melange.list.loadList("melangeList{% ifequal list.description 'Overview of Organization Applications whose status is "needs review"'%}0{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-accepted"'%}1{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "accepted"'%}2{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-rejected"'%}3{% endifequal %}",{% ifequal list.description 'Overview of Organization Applications whose status is "needs review"'%}0{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-accepted"'%}1{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "accepted"'%}2{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-rejected"'%}3{% endifequal %});
     }
   );
 </script>
-<div id="melangeList{% ifequal list.description "Your roles as Program Administrator."%}0{% endifequal %}{% ifequal list.description "Your roles as Mentor."%}1{% endifequal %}{% ifequal list.description "Your roles as Organization Admin."%}2{% endifequal %}{% ifequal list.description "Your roles as Student."%}3{% endifequal %}"></div>
+<div id="melangeList{% ifequal list.description 'Overview of Organization Applications whose status is "needs review"'%}0{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-accepted"'%}1{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "accepted"'%}2{% endifequal %}{% ifequal list.description 'Overview of Organization Applications whose status is "pre-rejected"'%}3{% endifequal %}"></div>
 {{ list.description }}
 
 <div class="list">
