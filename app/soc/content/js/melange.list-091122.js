@@ -27,6 +27,12 @@
 
   var melange = window.melange;
 
+  if (window.jLinq === undefined) {
+    throw new Error("jLinq not loaded");
+  }
+
+  var jLinq = window.jLinq;
+
   /** Package that handles all lists related functions
     * @name melange.list
     * @namespace melange.list
@@ -50,15 +56,15 @@
   var dummy_source = [];
   dummy_source[0] = {
     "configuration": {
-      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colNames": ["Key", "Link ID", "Name", "Program Owner"],
       "colModel": [
-        {name:"key", index: "key", resizable: true},
-        {name:"link_id", index: "link_id", resizable: true},
-        {name:"name", index: "name", resizable: true},
-        {name:"program_owner", index: "program_owner", resizable: true}
+        {name: "key", index: "key", resizable: true},
+        {name: "link_id", index: "link_id", resizable: true},
+        {name: "name", index: "name", resizable: true},
+        {name: "program_owner", index: "program_owner", resizable: true}
       ],
       rowNum: 4,
-      rowList: [4,8],
+      rowList: [4, 8],
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc"
@@ -96,15 +102,15 @@
   };
   dummy_source[1] = {
     "configuration": {
-      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colNames": ["Key", "Link ID", "Name", "Program Owner"],
       "colModel": [
-        {name:"key", index: "key", resizable: true},
-        {name:"link_id", index: "link_id", resizable: true},
-        {name:"name", index: "name", resizable: true},
-        {name:"program_owner", index: "program_owner", resizable: true}
+        {name: "key", index: "key", resizable: true},
+        {name: "link_id", index: "link_id", resizable: true},
+        {name: "name", index: "name", resizable: true},
+        {name: "program_owner", index: "program_owner", resizable: true}
       ],
       rowNum: 4,
-      rowList: [4,8],
+      rowList: [4, 8],
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc"
@@ -144,15 +150,15 @@
   };
   dummy_source[2] = {
     "configuration": {
-      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colNames": ["Key", "Link ID", "Name", "Program Owner"],
       "colModel": [
-        {name:"key", index: "key", resizable: true},
-        {name:"link_id", index: "link_id", resizable: true},
-        {name:"name", index: "name", resizable: true},
-        {name:"program_owner", index: "program_owner", resizable: true}
+        {name: "key", index: "key", resizable: true},
+        {name: "link_id", index: "link_id", resizable: true},
+        {name: "name", index: "name", resizable: true},
+        {name: "program_owner", index: "program_owner", resizable: true}
       ],
       rowNum: 4,
-      rowList: [4,8],
+      rowList: [4, 8],
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc"
@@ -184,15 +190,15 @@
   };
   dummy_source[3] = {
     "configuration": {
-      "colNames": ["Key","Link ID","Name","Program Owner"],
+      "colNames": ["Key", "Link ID", "Name", "Program Owner"],
       "colModel": [
-        {name:"key", index: "key", resizable: true},
-        {name:"link_id", index: "link_id", resizable: true},
-        {name:"name", index: "name", resizable: true},
-        {name:"program_owner", index: "program_owner", resizable: true}
+        {name: "key", index: "key", resizable: true},
+        {name: "link_id", index: "link_id", resizable: true},
+        {name: "name", index: "name", resizable: true},
+        {name: "program_owner", index: "program_owner", resizable: true}
       ],
       rowNum: 4,
-      rowList: [4,8],
+      rowList: [4, 8],
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc"
@@ -220,13 +226,13 @@
 
   var retrieveData = function (postdata) {
     var my_index = postdata.my_index;
-    var original_data = list_objects[my_index]["data"]
+    var original_data = list_objects[my_index].data;
     var temp_data = original_data;
 
     // Process search filter
     if (postdata._search) {
       // Process advanced search filter if present
-      if (postdata.searchField!==undefined && postdata.searchField!=="") {
+      if (postdata.searchField !== undefined && postdata.searchField !== "") {
         var searches = {
           "eq": { // equals
             method: "equals",
@@ -276,22 +282,22 @@
             method: "contains",
             not: true
           }
-        }
+        };
         // just because I don't know what to use for in and is not in, skipping
         if (postdata.searchOper !== "in" || postdata.searchOper !== "ni") {
           if (searches[postdata.searchOper].not) {
-            temp_data = jLinq.from(temp_data).not()[searches[postdata.searchOper].method](postdata.searchField,postdata.searchString).select();
+            temp_data = jLinq.from(temp_data).not()[searches[postdata.searchOper].method](postdata.searchField, postdata.searchString).select();
           }
           else {
-            temp_data = jLinq.from(temp_data)[searches[postdata.searchOper].method](postdata.searchField,postdata.searchString).select();
+            temp_data = jLinq.from(temp_data)[searches[postdata.searchOper].method](postdata.searchField, postdata.searchString).select();
           }
         }
       }
       // otherwise process simple filter
-      else if (original_data[0]!==undefined) {
+      else if (original_data[0] !== undefined) {
         jQuery.each(original_data[0], function (element_key, element_value) {
-          if (postdata[element_key]!==undefined) {
-            temp_data = jLinq.from(temp_data).contains(element_key,postdata[element_key]).select();
+          if (postdata[element_key] !== undefined) {
+            temp_data = jLinq.from(temp_data).contains(element_key, postdata[element_key]).select();
           }
         });
       }
@@ -300,98 +306,100 @@
     // Process index/sorting filters
     var sort_column = postdata.sidx;
     var order_type = postdata.sord;
-    if (order_type==="asc") {
+    if (order_type === "asc") {
       order_type = "";
     }
     else {
       order_type = "-";
     }
 
-    temp_data = jLinq.from(temp_data).orderBy(order_type+sort_column).select();
+    temp_data = jLinq.from(temp_data).orderBy(order_type + sort_column).select();
 
-    var offset_start = (postdata.page-1)*postdata.rows;
-    var offset_end = (postdata.page*postdata.rows)-1;
+    var offset_start = (postdata.page - 1) * postdata.rows;
+    var offset_end = (postdata.page * postdata.rows) - 1;
     var json_to_return = {
       "page": postdata.page,
-      "total": temp_data.length===0 ? 0 : Math.ceil(temp_data.length/postdata.rows),
+      "total": temp_data.length === 0 ? 0 : Math.ceil(temp_data.length / postdata.rows),
       "records": temp_data.length,
       "rows": []
     };
-    for (var i=offset_start; i<=offset_end; i++) {
-      if (temp_data[i]===undefined) continue;
+    for (var i = offset_start; i <= offset_end; i++) {
+      if (temp_data[i] === undefined) {
+        continue;
+      }
       var my_cell = [];
-      if (original_data[0]!==undefined) {
+      if (original_data[0] !== undefined) {
         jQuery.each(original_data[0], function (element_key, element_value) {
           my_cell.push(temp_data[i][element_key]);
         });
       }
 
       json_to_return.rows.push({
-        "key": temp_data[i]["key"],
+        "key": temp_data[i].key,
         "cell": my_cell
       });
     }
 
-    var thegrid = jQuery("#"+list_objects[my_index]["jqgrid"]["id"])[0];
+    var thegrid = jQuery("#" + list_objects[my_index].jqgrid.id)[0];
     thegrid.addJSONData(json_to_return);
-  }
+  };
 
 
   var default_jqgrid_options = {
     datatype: retrieveData,
     viewrecords: true
-  }
+  };
 
   var default_pager_options = {
-    edit:false,
-    add:false,
-    del:false
-  }
+    edit: false,
+    add: false,
+    del: false
+  };
 
-  $m.loadList = function (div,idx) {
-    var idx = parseInt(idx);
-    if (isNaN(idx) || idx<0) {
-      throw new melange.error.listIndexNotValid("List index "+idx+" is not valid");
+  $m.loadList = function (div, idx) {
+    idx = parseInt(idx, 10);
+    if (isNaN(idx) || idx < 0) {
+      throw new melange.error.listIndexNotValid("List index " + idx + " is not valid");
     }
     if (list_objects[idx]) {
-      throw new melange.error.indexAlreadyExistent("Index "+idx+" is already existent");
+      throw new melange.error.indexAlreadyExistent("Index " + idx + " is already existent");
     } else {
       list_objects[idx] = {};
     }
     jQuery(
       function () {
-        if (jQuery("#"+div).length===0) {
-          throw new melange.error.divNotExistent("Div "+div+" is not existent");
+        if (jQuery("#" + div).length === 0) {
+          throw new melange.error.divNotExistent("Div " + div + " is not existent");
         }
         list_objects[idx] = (
           function () {
             var start = "";
-            list_objects[idx]["data"] = [];
+            list_objects[idx].data = [];
             //create jqgrid object
-            var initial_div = jQuery("#"+div);
-            var table_id = "jqgrid_"+div;
-            var pager_id = "jqgrid_pager_"+div;
+            var initial_div = jQuery("#" + div);
+            var table_id = "jqgrid_" + div;
+            var pager_id = "jqgrid_pager_" + div;
             initial_div.replaceWith([
-              '<table id="'+table_id+'"',
+              '<table id="' + table_id + '"',
               ' cellpadding="0" cellspacing="0"',
               '></table>',
-              '<div id="'+pager_id+'"',
+              '<div id="' + pager_id + '"',
               ' style="text-align:center"',
               '></div>'
             ].join(""));
 
-            list_objects[idx]["jqgrid"] = {};
-            list_objects[idx]["jqgrid"]["id"] = table_id;
+            list_objects[idx].jqgrid = {};
+            list_objects[idx].jqgrid.id = table_id;
             /* This passage is necessary because otherwise default_jqgrid_options
                has side effect over the configuration of single tables
                e.g.: pager div name is always the last one
             */
-            var cloned_options = jQuery.extend({},default_jqgrid_options);
-            list_objects[idx]["jqgrid"]["options"] =
-              jQuery.extend(cloned_options,{pager: jQuery("#"+pager_id)});
-            list_objects[idx]["pager"] = {};
-            list_objects[idx]["pager"]["id"] = pager_id;
-            list_objects[idx]["pager"]["options"] = default_pager_options;
+            var cloned_options = jQuery.extend({}, default_jqgrid_options);
+            list_objects[idx].jqgrid.options =
+              jQuery.extend(cloned_options, {pager: jQuery("#" + pager_id)});
+            list_objects[idx].pager = {};
+            list_objects[idx].pager.id = pager_id;
+            list_objects[idx].pager.options = default_pager_options;
 
             var looping = function () {
               jQuery.ajax({
@@ -400,71 +408,73 @@
                 url: [
                   window.location.href,
                   "?fmt=json&count=50",
-                  (start===""?"":"&start="+start),
-                  "&idx=",idx
+                  (start === "" ? "" : "&start=" + start),
+                  "&idx=", idx
                 ].join(""),
                 timeout: 10000,
                 success: function (data) {
-                  jQuery("#"+div).html("List number "+idx+" loaded");
+                  jQuery("#" + div).html("List number " + idx + " loaded");
                   //console.debug("I'm idx "+idx+" with start "+start);
-                  if (dummy_source[idx]["data"][start]!==undefined) {
+                  if (dummy_source[idx].data[start] !== undefined) {
                     //console.debug("data present, including");
-                    list_objects[idx]["configuration"] = dummy_source[idx]["configuration"];
-                    var my_data = dummy_source[idx]["data"][start];
+                    list_objects[idx].configuration = dummy_source[idx].configuration;
+                    var my_data = dummy_source[idx].data[start];
                     jQuery.each(my_data, function () {
-                      list_objects[idx]["data"].push(this);
+                      list_objects[idx].data.push(this);
                     });
 
                     //if jqGrid is not present, create it
-                    if (list_objects[idx]["jqgrid"]["object"] === undefined) {
-                      var extended_config = list_objects[idx]["configuration"] || {};
+                    if (list_objects[idx].jqgrid.object === undefined) {
+                      var extended_config = list_objects[idx].configuration || {};
                       //giving index of the table in post data
-                      jQuery.extend(extended_config,{postData: {my_index: idx}});
+                      jQuery.extend(extended_config, {postData: {my_index: idx}});
 
-                      var table_id = list_objects[idx]["jqgrid"]["id"];
-                      var jqgrid_options = list_objects[idx]["jqgrid"]["options"];
+                      var table_id = list_objects[idx].jqgrid.id;
+                      var jqgrid_options = list_objects[idx].jqgrid.options;
 
-                      var pager_id = list_objects[idx]["pager"]["id"];
-                      var pager_options = list_objects[idx]["pager"]["options"];
+                      var pager_id = list_objects[idx].pager.id;
+                      var pager_options = list_objects[idx].pager.options;
 
-                      jQuery("#"+table_id)
+                      var button_showhide_options = {
+                        caption: "",
+                        buttonicon: "ui-icon-calculator",
+                        onClickButton: function () {
+                          jQuery("#" + table_id).setColumns({
+                            colnameview: false,
+                            jqModal: true,
+                            ShrinkToFit: true
+                          });
+                          return false;
+                        },
+                        position: "last",
+                        title: "Show/Hide Columns",
+                        cursor: "pointer"
+                      };
+
+                      jQuery("#" + table_id)
                         .jqGrid(
-                          jQuery.extend(jqgrid_options,extended_config)
+                          jQuery.extend(jqgrid_options, extended_config)
                         )
                         .jqGrid(
                           // show pager
                           "navGrid",
-                          "#"+pager_id,
+                          "#" + pager_id,
                           pager_options
                         ).jqGrid(
                           // show button to hide/show columns
                           "navButtonAdd",
-                          "#"+pager_id,
-                          {
-                            caption: "",
-                            buttonicon: "ui-icon-calculator",
-                            onClickButton: function () {
-                              jQuery("#"+table_id).setColumns({
-                                colnameview: false,
-                                jqModal: true,
-                                ShrinkToFit: true
-                              });
-                              return false;
-                            },
-                            position: "last",
-                            title: "Show/Hide Columns",
-                            cursor: "pointer"
-                          }
+                          "#" + pager_id,
+                          button_showhide_options
                         );
-                      jQuery("#"+table_id).jqGrid('filterToolbar',{});
-                      list_objects[idx]["jqgrid"]["object"] = jQuery("#"+table_id);
+                      jQuery("#" + table_id).jqGrid('filterToolbar', {});
+                      list_objects[idx].jqgrid.object = jQuery("#" + table_id);
                     }
                     else {
                       //else trigger new data in jqgrid object
-                      list_objects[idx]["jqgrid"]["object"].trigger("reloadGrid");
+                      list_objects[idx].jqgrid.object.trigger("reloadGrid");
                     }
                     //call next iteration
-                    start = my_data[(my_data.length-1)].key;
+                    start = my_data[(my_data.length - 1)].key;
                     setTimeout(looping, 100);
                   }
                   else {
@@ -473,10 +483,10 @@
                   }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                  jQuery("#"+div).html("Error retrieving list number "+idx);
+                  jQuery("#" + div).html("Error retrieving list number " + idx);
                 }
               });
-            }
+            };
             return setTimeout(
               looping,
               0
@@ -490,5 +500,5 @@
        //console.debug("callback called for index "+idx);
        //console.dir(list_objects[idx]["data"]);
     }
-  }
+  };
 }());
