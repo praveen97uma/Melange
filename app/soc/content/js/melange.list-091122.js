@@ -477,8 +477,10 @@
                       list_objects[idx].jqgrid.object.trigger("reloadGrid");
                     }
                     //call next iteration
-                    start = my_data[(my_data.length - 1)].key;
-                    setTimeout(looping, 100);
+                    if (my_data[(my_data.length- 1)] !== {}) {
+                      start = my_data[(my_data.length - 1)].key;
+                      setTimeout(looping, 100);
+                    }
                   }
                   else {
                     //can call a callback if needed
