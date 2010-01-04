@@ -462,7 +462,14 @@
                           // show pager
                           "navGrid",
                           "#" + pager_id,
-                          pager_options
+                          pager_options,
+                          {}, // settings for edit
+                          {}, // settings for add
+                          {}, // settings for delete
+                          {
+                            closeAfterSearch: true
+                          },
+                          {} // view parameters
                         ).jqGrid(
                           // show button to hide/show columns
                           "navButtonAdd",
