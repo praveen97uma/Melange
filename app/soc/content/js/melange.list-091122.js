@@ -421,7 +421,9 @@
                   //console.debug("I'm idx "+idx+" with start "+start);
                   if (dummy_source[idx].data[start] !== undefined) {
                     //console.debug("data present, including");
-                    list_objects[idx].configuration = dummy_source[idx].configuration;
+                    if (list_objects[idx].configuration === undefined) {
+                      list_objects[idx].configuration = dummy_source[idx].configuration;
+                    }
                     var my_data = dummy_source[idx].data[start];
                     jQuery.each(my_data, function () {
                       list_objects[idx].data.push(this);
