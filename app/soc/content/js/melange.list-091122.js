@@ -435,12 +435,17 @@
                 success: function (data) {
                   jQuery("#" + div).html("List number " + idx + " loaded");
                   //console.debug("I'm idx "+idx+" with start "+start);
-                  if (dummy_source[idx].data[start] !== undefined) {
+                  var source = JSON.parse(data);
+
+                  if (source == null)
+                    source = dummy_source[idx];
+
+                  if (source.data[start] !== undefined) {
                     //console.debug("data present, including");
                     if (list_objects[idx].configuration === undefined) {
-                      list_objects[idx].configuration = dummy_source[idx].configuration;
+                      list_objects[idx].configuration = source.configuration;
                     }
-                    var my_data = dummy_source[idx].data[start];
+                    var my_data = source.data[start];
                     jQuery.each(my_data, function () {
                       list_objects[idx].data.push(this);
                     });
