@@ -232,79 +232,95 @@
     var my_index = postdata.my_index;
     var original_data = list_objects[my_index].data;
     var temp_data = original_data;
+    var group_operation = "";
+    var searches = {
+      "eq": { // equals
+        method: "equals",
+        not: false
+      },
+      "ne": { // not equals
+        method: "equals",
+        not: true
+      },
+      "lt": { // less
+        method: "less",
+        not: false
+      },
+      "le": { // less or equal
+        method: "lessEquals",
+        not: false
+      },
+      "gt": { // greater
+        method: "greater",
+        not: false
+      },
+      "ge": { // greater or equal
+        method: "greaterEquals",
+        not: false
+      },
+      "bw": { // begins with
+        method: "startsWith",
+        not: false
+      },
+      "bn": { // does not begins with
+        method: "startsWith",
+        not: true
+      },
+      "ew": { // ends with
+        method: "endsWith",
+        not: false
+      },
+      "en": { // does not end with
+        method: "endsWith",
+        not: true
+      },
+      "cn": { // contains
+        method: "contains",
+        not: false
+      },
+      "nc": { // does not contain
+        method: "contains",
+        not: true
+      }
+    };
 
     // Process search filter
     if (postdata._search) {
-      // Process advanced search filter if present
-      if (postdata.searchField !== undefined && postdata.searchField !== "") {
-        var searches = {
-          "eq": { // equals
-            method: "equals",
-            not: false
-          },
-          "ne": { // not equals
-            method: "equals",
-            not: true
-          },
-          "lt": { // less
-            method: "less",
-            not: false
-          },
-          "le": { // less or equal
-            method: "lessEquals",
-            not: false
-          },
-          "gt": { // greater
-            method: "greater",
-            not: false
-          },
-          "ge": { // greater or equal
-            method: "greaterEquals",
-            not: false
-          },
-          "bw": { // begins with
-            method: "startsWith",
-            not: false
-          },
-          "bn": { // does not begins with
-            method: "startsWith",
-            not: true
-          },
-          "ew": { // ends with
-            method: "endsWith",
-            not: false
-          },
-          "en": { // does not end with
-            method: "endsWith",
-            not: true
-          },
-          "cn": { // contains
-            method: "contains",
-            not: false
-          },
-          "nc": { // does not contain
-            method: "contains",
-            not: true
-          }
-        };
-        // just because I don't know what to use for in and is not in, skipping
-        if (postdata.searchOper !== "in" || postdata.searchOper !== "ni") {
-          if (searches[postdata.searchOper].not) {
-            temp_data = jLinq.from(temp_data).not()[searches[postdata.searchOper].method](postdata.searchField, postdata.searchString).select();
-          }
-          else {
-            temp_data = jLinq.from(temp_data)[searches[postdata.searchOper].method](postdata.searchField, postdata.searchString).select();
-          }
+      var filters = JSON.parse(postdata.filters);
+      if (filters.rules[0].data !== "") {
+        group_operation = filters.groupOp;
+        if (group_operation === "OR") {
+          temp_data = {};
         }
-      }
-      // otherwise process simple filter
-      else if (original_data[0] !== undefined) {
-        jQuery.each(original_data[0], function (element_key, element_value) {
-          if (postdata[element_key] !== undefined) {
-            temp_data = jLinq.from(temp_data).contains(element_key, postdata[element_key]).select();
+        jQuery.each(filters.rules, function (arr_index, filter) {
+          if (filter.field !== "in" || filter.field !== "ni") {
+            if (searches[filter.op].not) {
+              if (group_operation === "OR") {
+                temp_data = jLinq.from(temp_data).union(jLinq.from(original_data).not()[searches[filter.op].method](filter.field, filter.data).select()).select();
+              }
+              else {
+                temp_data = jLinq.from(temp_data).not()[searches[filter.op].method](filter.field, filter.data).select();
+              }
+            }
+            else {
+              if (group_operation === "OR") {
+                temp_data = jLinq.from(temp_data).union(jLinq.from(original_data)[searches[filter.op].method](filter.field, filter.data).select()).select();
+              }
+              else {
+                temp_data = jLinq.from(temp_data)[searches[filter.op].method](filter.field, filter.data).select();
+              }
+            }
           }
         });
       }
+    }
+    // otherwise process simple filter
+    else if (original_data[0] !== undefined) {
+      jQuery.each(original_data[0], function (element_key, element_value) {
+        if (postdata[element_key] !== undefined) {
+          temp_data = jLinq.from(temp_data).contains(element_key, postdata[element_key]).select();
+        }
+      });
     }
 
     // Process index/sorting filters
@@ -470,7 +486,8 @@
                           {}, // settings for add
                           {}, // settings for delete
                           {
-                            closeAfterSearch: true
+                            closeAfterSearch: true,
+                            multipleSearch: true
                           },
                           {} // view parameters
                         ).jqGrid(
