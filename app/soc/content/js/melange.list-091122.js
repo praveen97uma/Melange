@@ -484,7 +484,7 @@
                       list_objects[idx].jqgrid.object.trigger("reloadGrid");
                     }
                     //call next iteration
-                    if (my_data[(my_data.length- 1)] !== {}) {
+                    if (my_data[(my_data.length- 1)] !== undefined) {
                       start = my_data[(my_data.length - 1)].key;
                       setTimeout(looping, 100);
                     }
