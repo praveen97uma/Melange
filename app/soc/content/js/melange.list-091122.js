@@ -64,7 +64,8 @@
       rowList: [4, 8],
       autowidth: true,
       sortname: "link_id",
-      sortorder: "asc"
+      sortorder: "asc",
+      height: "auto"
     },
     "data": {
       "": [
