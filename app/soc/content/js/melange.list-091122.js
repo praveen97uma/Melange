@@ -435,10 +435,13 @@
                 success: function (data) {
                   jQuery("#" + div).html("List number " + idx + " loaded");
                   //console.debug("I'm idx "+idx+" with start "+start);
-                  var source = JSON.parse(data);
-
-                  if (source == null)
+                  var source;
+                  try {
+                    source = JSON.parse(data);
+                  }
+                  catch (SyntaxError) {
                     source = dummy_source[idx];
+                  }
 
                   if (source.data[start] !== undefined) {
                     //console.debug("data present, including");
