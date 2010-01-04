@@ -332,9 +332,9 @@
       }
       var my_cell = [];
       if (original_data[0] !== undefined) {
-        jQuery.each(original_data[0], function (element_key, element_value) {
-          my_cell.push(temp_data[i][element_key]);
-        });
+          jQuery.each(list_objects[my_index].configuration.colModel, function (element_key, element_value) {
+            my_cell.push(temp_data[i][element_value.name]);
+          });
       }
 
       json_to_return.rows.push({
