@@ -427,7 +427,7 @@
                 cache: false,
                 url: [
                   window.location.href,
-                  "?fmt=json&count=50",
+                  "?fmt=json&limit=250",
                   (start === "" ? "" : "&start=" + start),
                   "&idx=", idx
                 ].join(""),
