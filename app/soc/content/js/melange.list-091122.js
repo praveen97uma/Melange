@@ -406,7 +406,7 @@
 
             var looping = function () {
               jQuery.ajax({
-                async: false,
+                async: true,
                 cache: false,
                 url: [
                   window.location.href,
@@ -492,7 +492,7 @@
             };
             return setTimeout(
               looping,
-              0
+              100
             );
           }
         );
