@@ -455,8 +455,7 @@
                   catch (SyntaxError) {
                     source = dummy_source[idx];
                   }
-
-                  if (source.data[start] !== undefined) {
+                  if (source.data[start] !== undefined && source.data[start].length) {
                     //console.debug("data present, including");
                     if (list_objects[idx].configuration === undefined) {
                       list_objects[idx].configuration = source.configuration;
