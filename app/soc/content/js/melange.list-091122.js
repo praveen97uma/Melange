@@ -297,7 +297,7 @@
     };
 
     // Process search filter
-    if (postdata._search) {
+    if (postdata._search && postdata.filters) {
       var filters = JSON.parse(postdata.filters);
       if (filters.rules[0].data !== "") {
         group_operation = filters.groupOp;
