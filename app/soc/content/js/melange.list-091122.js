@@ -514,6 +514,10 @@
                           button_showhide_options
                         );
                       jQuery("#" + table_id).jqGrid('filterToolbar', {});
+
+                      // Show Loading message
+                      jQuery("#load_"+table_id).show();
+
                       list_objects[idx].jqgrid.object = jQuery("#" + table_id);
                     }
                     else {
@@ -528,6 +532,10 @@
                   }
                   else {
                     //can call a callback if needed
+
+                    //loading data finished, hiding loading message
+                    jQuery("#load_" + list_objects[idx].jqgrid.id).hide();
+
                     //console.debug("void, skipping");
                   }
                 },
