@@ -519,58 +519,6 @@
                         );
                       jQuery("#" + table_id).jqGrid('filterToolbar', {});
 
-                      //Add some padding at the bottom of the toolbar to display buttons correctly
-                      jQuery("#t_" + table_id).css("padding-bottom","3px");
-                      //Add CSV export button
-                      jQuery("#t_" + table_id).append("<input type='button' value='CSV Export' style='float:right' id='csvexport_" + table_id + "'/>");
-                      //Add Click event to CSV export button
-                      jQuery("#csvexport_" + table_id).click(function () {
-                        var csv_export = [];
-                        csv_export[0] = [];
-                        var number_of_records = jQuery("#" + table_id).jqGrid('getGridParam',"records");
-                        for (var row_index = 1; row_index < number_of_records; row_index++) {
-                          var row = jQuery("#" + table_id).jqGrid('getRowData', row_index);
-                          if (row_index === 1) {
-                            //Add columns headers
-                            jQuery.each(row, function (column_name, cell_value) {
-                              // check index for column name
-                              var desc_column_index;
-                              jQuery.each(list_objects[idx].configuration.colModel, function (object_index, object) {
-                                if (object.name === column_name) {
-                                  desc_column_index = object_index;
-                                }
-                              });
-                              var field_text = list_objects[idx].configuration.colNames[desc_column_index];
-                              if (field_text.indexOf("\"") !== -1) {
-                                field_text = field_text.replace("\"","\"\"");
-                              }
-                              if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
-                                field_text = "\"" + field_text + "\"";
-                              }
-                              csv_export[0].push(field_text);
-                            });
-                            csv_export[0] = csv_export[0].join(",");
-                          }
-                          //now run through the columns
-                          csv_export[csv_export.length] = [];
-                          jQuery.each(row, function (column_name, cell_value) {
-                            var field_text = cell_value;
-                            if (field_text.indexOf("\"") !== -1) {
-                              field_text = field_text.replace("\"","\"\"");
-                            }
-                            if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
-                              field_text = "\"" + field_text + "\"";
-                            }
-                            csv_export[csv_export.length - 1].push(field_text);
-                          });
-                          csv_export[csv_export.length - 1] = csv_export[csv_export.length - 1].join(",");
-                        }
-                        csv_export = csv_export.join("\r\n");
-                        //CSV string is there, now put it in a thickbox for the user to copy/paste
-                        jQuery("body").append("<div id='csv_thickbox' style='display:none'><h3>Now you can copy and paste CSV data from the text area to a new file:</h3><textarea style='width:450px;height:250px'>"+csv_export+"</textarea></div>");
-                        tb_show("CSV export","#TB_inline?height=400&width=500&inlineId=csv_thickbox");
-                      });
-
                       // Show Loading message
                       jQuery("#load_"+table_id).show();
 
@@ -592,6 +540,59 @@
                     //loading data finished, hiding loading message
                     jQuery("#load_" + list_objects[idx].jqgrid.id).hide();
 
+                    //Add CSV Export button only once all data is loaded
+
+                    //Add some padding at the bottom of the toolbar to display buttons correctly
+                    jQuery("#t_" + list_objects[idx].jqgrid.id).css("padding-bottom","3px");
+                    //Add CSV export button
+                    jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='CSV Export' style='float:right' id='csvexport_" + list_objects[idx].jqgrid.id + "'/>");
+                    //Add Click event to CSV export button
+                    jQuery("#csvexport_" + list_objects[idx].jqgrid.id).click(function () {
+                      var csv_export = [];
+                      csv_export[0] = [];
+                      var number_of_records = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getGridParam',"records");
+                      for (var row_index = 1; row_index < number_of_records; row_index++) {
+                        var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData', row_index);
+                        if (row_index === 1) {
+                          //Add columns headers
+                          jQuery.each(row, function (column_name, cell_value) {
+                            // check index for column name
+                            var desc_column_index;
+                            jQuery.each(list_objects[idx].configuration.colModel, function (object_index, object) {
+                              if (object.name === column_name) {
+                                desc_column_index = object_index;
+                              }
+                            });
+                            var field_text = list_objects[idx].configuration.colNames[desc_column_index];
+                            if (field_text.indexOf("\"") !== -1) {
+                              field_text = field_text.replace("\"","\"\"");
+                            }
+                            if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
+                              field_text = "\"" + field_text + "\"";
+                            }
+                            csv_export[0].push(field_text);
+                          });
+                          csv_export[0] = csv_export[0].join(",");
+                        }
+                        //now run through the columns
+                        csv_export[csv_export.length] = [];
+                        jQuery.each(row, function (column_name, cell_value) {
+                          var field_text = cell_value;
+                          if (field_text.indexOf("\"") !== -1) {
+                            field_text = field_text.replace("\"","\"\"");
+                          }
+                          if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
+                            field_text = "\"" + field_text + "\"";
+                          }
+                          csv_export[csv_export.length - 1].push(field_text);
+                        });
+                        csv_export[csv_export.length - 1] = csv_export[csv_export.length - 1].join(",");
+                      }
+                      csv_export = csv_export.join("\r\n");
+                      //CSV string is there, now put it in a thickbox for the user to copy/paste
+                      jQuery("body").append("<div id='csv_thickbox' style='display:none'><h3>Now you can copy and paste CSV data from the text area to a new file:</h3><textarea style='width:450px;height:250px'>"+csv_export+"</textarea></div>");
+                      tb_show("CSV export","#TB_inline?height=400&width=500&inlineId=csv_thickbox");
+                    });
                     //console.debug("void, skipping");
                   }
                 },
