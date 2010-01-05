@@ -281,6 +281,14 @@
       "nc": { // does not contain
         method: "contains",
         not: true
+      },
+      "in": {
+        method: "match",
+        not: false
+      },
+      "ni": {
+        method: "match",
+        not: true
       }
     };
 
@@ -293,22 +301,23 @@
           temp_data = {};
         }
         jQuery.each(filters.rules, function (arr_index, filter) {
-          if (filter.field !== "in" || filter.field !== "ni") {
-            if (searches[filter.op].not) {
-              if (group_operation === "OR") {
-                temp_data = jLinq.from(temp_data).union(jLinq.from(original_data).not()[searches[filter.op].method](filter.field, filter.data).select()).select();
-              }
-              else {
-                temp_data = jLinq.from(temp_data).not()[searches[filter.op].method](filter.field, filter.data).select();
-              }
+          if (filter.op === "in" || filter.op === "ni") {
+            filter.data = filter.data.split(",").join("|");
+          }
+          if (searches[filter.op].not) {
+            if (group_operation === "OR") {
+              temp_data = jLinq.from(temp_data).union(jLinq.from(original_data).not()[searches[filter.op].method](filter.field, filter.data).select()).select();
             }
             else {
-              if (group_operation === "OR") {
-                temp_data = jLinq.from(temp_data).union(jLinq.from(original_data)[searches[filter.op].method](filter.field, filter.data).select()).select();
-              }
-              else {
-                temp_data = jLinq.from(temp_data)[searches[filter.op].method](filter.field, filter.data).select();
-              }
+              temp_data = jLinq.from(temp_data).not()[searches[filter.op].method](filter.field, filter.data).select();
+            }
+          }
+          else {
+            if (group_operation === "OR") {
+              temp_data = jLinq.from(temp_data).union(jLinq.from(original_data)[searches[filter.op].method](filter.field, filter.data).select()).select();
+            }
+            else {
+              temp_data = jLinq.from(temp_data)[searches[filter.op].method](filter.field, filter.data).select();
             }
           }
         });
