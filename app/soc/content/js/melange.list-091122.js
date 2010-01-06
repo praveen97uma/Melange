@@ -71,36 +71,116 @@
     "data": {
       "": [
         {
-          "key": "key_test",
-          "link_id": "test",
-          "name": "Test Example",
-          "program_owner": "Google"
+          "columns": {
+            "key": "key_test",
+            "link_id": "test",
+            "name": "Test Example",
+            "program_owner": "Google"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_test2",
-          "link_id": "test2",
-          "name": "Test Example",
-          "program_owner": "GooglePlex"
+          "columns": {
+            "key": "key_test2",
+            "link_id": "test2",
+            "name": "Test Example",
+            "program_owner": "GooglePlex"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ],
       "key_test2": [
         {
-          "key": "key_test2bis",
-          "link_id": "test2bis",
-          "name": "Test Example Loaded Incrementally",
-          "program_owner": "Google"
+          "columns": {
+            "key": "key_test2bis",
+            "link_id": "test2bis",
+            "name": "Test Example Loaded Incrementally",
+            "program_owner": "Google"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_test2tris",
-          "link_id": "test2tris",
-          "name": "Test Example Loaded Incrementally",
-          "program_owner": "GooglePlex"
+          "columns": {
+            "key": "key_test2tris",
+            "link_id": "test2tris",
+            "name": "Test Example Loaded Incrementally",
+            "program_owner": "GooglePlex"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_2ndpage",
-          "link_id": "test2ndpage",
-          "name": "Test Example 2nd page",
-          "program_owner": "Google"
+          "columns": {
+            "key": "key_2ndpage",
+            "link_id": "test2ndpage",
+            "name": "Test Example 2nd page",
+            "program_owner": "Google"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ]
     }
@@ -124,32 +204,96 @@
     "data": {
       "": [
         {
-          "key": "key_test3",
-          "link_id": "test3",
-          "name": "Mentor Test Example",
-          "program_owner": "melange"
+          "columns": {
+            "key": "key_test3",
+            "link_id": "test3",
+            "name": "Mentor Test Example",
+            "program_owner": "melange"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_test4",
-          "link_id": "test4",
-          "name": "Mentor Test Example",
-          "program_owner": "google1"
+          "columns": {
+            "key": "key_test4",
+            "link_id": "test4",
+            "name": "Mentor Test Example",
+            "program_owner": "google1"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ],
       "key_test4": [
         {
-          "key": "key_test5",
-          "link_id": "test5",
-          "name": "Mentor Test Example Loaded Incrementally",
-          "program_owner": "google1"
+          "columns": {
+            "key": "key_test5",
+            "link_id": "test5",
+            "name": "Mentor Test Example Loaded Incrementally",
+            "program_owner": "google1"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ],
       "key_test5": [
         {
-          "key": "key_test6",
-          "link_id": "test6",
-          "name": "Mentor Test Example Loaded Incrementally 2",
-          "program_owner": "google1"
+          "columns": {
+            "key": "key_test6",
+            "link_id": "test6",
+            "name": "Mentor Test Example Loaded Incrementally 2",
+            "program_owner": "google1"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ]
     }
@@ -173,24 +317,72 @@
     "data": {
       "": [
         {
-          "key": "key_test7",
-          "link_id": "test7",
-          "name": "Admin Test Example",
-          "program_owner": "melange"
+          "columns": {
+            "key": "key_test7",
+            "link_id": "test7",
+            "name": "Admin Test Example",
+            "program_owner": "melange"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_test8",
-          "link_id": "test8",
-          "name": "Admin Test Example",
-          "program_owner": "google1"
+          "columns": {
+            "key": "key_test8",
+            "link_id": "test8",
+            "name": "Admin Test Example",
+            "program_owner": "google1"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ],
       "key_test8": [
         {
-          "key": "key_test9",
-          "link_id": "test9",
-          "name": "Admin Test Example Loaded Incrementally",
-          "program_owner": "google1"
+          "columns": {
+            "key": "key_test9",
+            "link_id": "test9",
+            "name": "Admin Test Example Loaded Incrementally",
+            "program_owner": "google1"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ]
     }
@@ -214,16 +406,48 @@
     "data": {
       "": [
         {
-          "key": "key_test10",
-          "link_id": "test10",
-          "name": "Student Test Example",
-          "program_owner": "Google"
+          "columns": {
+            "key": "key_test10",
+            "link_id": "test10",
+            "name": "Student Test Example",
+            "program_owner": "Google"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         },
         {
-          "key": "key_test11",
-          "link_id": "test11",
-          "name": "Student Test Example",
-          "program_owner": "GooglePlex"
+          "columns": {
+            "key": "key_test11",
+            "link_id": "test11",
+            "name": "Student Test Example",
+            "program_owner": "GooglePlex"
+          },
+          "operations": {
+            "add": {
+              "caption": "Add a user",
+              "link": "http://add"
+            },
+            "edit": {
+              "caption": "Edit a user",
+              "link": "http://edit"
+            },
+            "delete": {
+              "caption": "Delete a User",
+              "link": "http://delete"
+            }
+          }
         }
       ]
     }
@@ -463,7 +687,7 @@
                     }
                     var my_data = source.data[start];
                     jQuery.each(my_data, function () {
-                      list_objects[idx].data.push(this);
+                      list_objects[idx].data.push(this.columns);
                     });
 
                     //if jqGrid is not present, create it
@@ -530,7 +754,7 @@
                     }
                     //call next iteration
                     if (my_data[(my_data.length- 1)] !== undefined) {
-                      start = my_data[(my_data.length - 1)].key;
+                      start = my_data[(my_data.length - 1)].columns.key;
                       setTimeout(looping, 100);
                     }
                   }
