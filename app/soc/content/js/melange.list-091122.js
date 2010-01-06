@@ -80,15 +80,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add1"
+              "link": "http://add1",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit1"
+              "link": "http://edit1",
+              "new_window": false
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete1"
+              "link": "http://delete1",
+              "new_window": true
             }
           }
         },
@@ -102,15 +105,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add2"
+              "link": "http://add2",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit2"
+              "link": "http://edit2",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete2"
+              "link": "http://delete2",
+              "new_window": true
             }
           }
         }
@@ -126,15 +132,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         },
@@ -148,15 +157,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         },
@@ -170,15 +182,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -213,15 +228,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         },
@@ -235,15 +253,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -259,15 +280,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -283,15 +307,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -326,15 +353,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         },
@@ -348,15 +378,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -372,15 +405,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -415,15 +451,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         },
@@ -437,15 +476,18 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add",
+              "new_window": true
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit",
+              "new_window": true
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete",
+              "new_window": true
             }
           }
         }
@@ -660,8 +702,9 @@
               var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',row_number);
               var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
               jQuery.each(object.operations, function (operation_name, operation_object) {
+                var new_location = operation_object.new_window ? 'window.open("' + operation_object.link + '")' : 'window.location.href = "' + operation_object.link + '"';
                 jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation_name).remove();
-                jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation_object.caption + "' style='float:left' id='" + list_objects[idx].jqgrid.id +"_buttonOp_" + operation_name + "' onclick = 'window.location.href = \"" + operation_object.link + "\"'/>");
+                jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation_object.caption + "' style='float:left' id='" + list_objects[idx].jqgrid.id +"_buttonOp_" + operation_name + "' onclick = '" + new_location + "'/>");
               });
             }
 
