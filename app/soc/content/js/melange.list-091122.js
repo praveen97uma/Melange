@@ -347,6 +347,7 @@
     }
 
     temp_data = jLinq.from(temp_data).orderBy(order_type + sort_column).select();
+    list_objects[my_index].filtered_data = temp_data;
 
     var offset_start = (postdata.page - 1) * postdata.rows;
     var offset_end = (postdata.page * postdata.rows) - 1;
@@ -549,48 +550,49 @@
                     jQuery("#csvexport_" + list_objects[idx].jqgrid.id).click(function () {
                       var csv_export = [];
                       csv_export[0] = [];
-                      var number_of_records = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getGridParam',"records");
-                      for (var row_index = 1; row_index < number_of_records; row_index++) {
-                        var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData', row_index);
-                        if (row_index === 1) {
-                          //Add columns headers
-                          jQuery.each(row, function (column_name, cell_value) {
-                            // check index for column name
-                            var desc_column_index;
-                            jQuery.each(list_objects[idx].configuration.colModel, function (object_index, object) {
-                              if (object.name === column_name) {
-                                desc_column_index = object_index;
-                              }
-                            });
-                            var field_text = list_objects[idx].configuration.colNames[desc_column_index];
-                            if (field_text.indexOf("\"") !== -1) {
-                              field_text = field_text.replace("\"","\"\"");
+                      //get Columns names
+                      if (list_objects[idx].data[0] !== undefined || list_objects[idx].filtered_data[0] !== undefined) {
+                        var iterate_through = list_objects[idx].filtered_data || list_objects[idx].data;
+                        jQuery.each(iterate_through[0], function (column_name, cell_value) {
+                          // check index for column name
+                          var desc_column_index;
+                          jQuery.each(list_objects[idx].configuration.colModel, function (object_index, object) {
+                            if (object.name === column_name) {
+                              desc_column_index = object_index;
                             }
-                            if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
-                              field_text = "\"" + field_text + "\"";
-                            }
-                            csv_export[0].push(field_text);
                           });
-                          csv_export[0] = csv_export[0].join(",");
-                        }
-                        //now run through the columns
-                        csv_export[csv_export.length] = [];
-                        jQuery.each(row, function (column_name, cell_value) {
-                          var field_text = cell_value;
+                          var field_text = list_objects[idx].configuration.colNames[desc_column_index];
                           if (field_text.indexOf("\"") !== -1) {
                             field_text = field_text.replace("\"","\"\"");
                           }
                           if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
                             field_text = "\"" + field_text + "\"";
                           }
-                          csv_export[csv_export.length - 1].push(field_text);
+                          csv_export[0].push(field_text);
                         });
-                        csv_export[csv_export.length - 1] = csv_export[csv_export.length - 1].join(",");
-                      }
-                      csv_export = csv_export.join("\r\n");
-                      //CSV string is there, now put it in a thickbox for the user to copy/paste
-                      jQuery("body").append("<div id='csv_thickbox' style='display:none'><h3>Now you can copy and paste CSV data from the text area to a new file:</h3><textarea style='width:450px;height:250px'>"+csv_export+"</textarea></div>");
+                        csv_export[0] = csv_export[0].join(",");
+
+                        //now run through the columns
+                        jQuery.each(iterate_through, function (row_index, row) {
+                          csv_export[csv_export.length] = [];
+                          jQuery.each(row, function (column_name, cell_value) {
+                            var field_text = cell_value;
+                            if (field_text.indexOf("\"") !== -1) {
+                              field_text = field_text.replace("\"","\"\"");
+                            }
+                            if (field_text.indexOf(",") !== -1 || field_text.indexOf("\"") !== -1 || field_text.indexOf("\r\n") !== -1) {
+                              field_text = "\"" + field_text + "\"";
+                            }
+                            csv_export[csv_export.length - 1].push(field_text);
+                          });
+                          csv_export[csv_export.length - 1] = csv_export[csv_export.length - 1].join(",");
+                        });
+                        csv_export = csv_export.join("\r\n");
+                        //CSV string is there, now put it in a thickbox for the user to copy/paste
+                        jQuery("#csv_thickbox").remove();
+                        jQuery("body").append("<div id='csv_thickbox' style='display:none'><h3>Now you can copy and paste CSV data from the text area to a new file:</h3><textarea style='width:450px;height:250px'>"+csv_export+"</textarea></div>");
                       tb_show("CSV export","#TB_inline?height=400&width=500&inlineId=csv_thickbox");
+                      }
                     });
                     //console.debug("void, skipping");
                   }
