@@ -80,15 +80,15 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add1"
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit1"
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete1"
             }
           }
         },
@@ -102,15 +102,15 @@
           "operations": {
             "add": {
               "caption": "Add a user",
-              "link": "http://add"
+              "link": "http://add2"
             },
             "edit": {
               "caption": "Edit a user",
-              "link": "http://edit"
+              "link": "http://edit2"
             },
             "delete": {
               "caption": "Delete a User",
-              "link": "http://delete"
+              "link": "http://delete2"
             }
           }
         }
@@ -633,6 +633,7 @@
           function () {
             var start = "";
             list_objects[idx].data = [];
+            list_objects[idx].all_data = [];
             //create jqgrid object
             var initial_div = jQuery("#" + div);
             var table_id = "jqgrid_" + div;
@@ -655,6 +656,15 @@
             var cloned_options = jQuery.extend({}, default_jqgrid_options);
             list_objects[idx].jqgrid.options =
               jQuery.extend(cloned_options, {pager: jQuery("#" + pager_id)});
+            list_objects[idx].jqgrid.options.onSelectRow = function (row_number) {
+              var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',row_number);
+              var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
+              jQuery.each(object.operations, function (operation_name, operation_object) {
+                jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation_name).remove();
+                jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation_object.caption + "' style='float:left' id='" + list_objects[idx].jqgrid.id +"_buttonOp_" + operation_name + "' onclick = 'window.location.href = \"" + operation_object.link + "\"'/>");
+              });
+            }
+
             list_objects[idx].pager = {};
             list_objects[idx].pager.id = pager_id;
             list_objects[idx].pager.options = default_pager_options;
@@ -688,6 +698,7 @@
                     var my_data = source.data[start];
                     jQuery.each(my_data, function () {
                       list_objects[idx].data.push(this.columns);
+                      list_objects[idx].all_data.push(this);
                     });
 
                     //if jqGrid is not present, create it
