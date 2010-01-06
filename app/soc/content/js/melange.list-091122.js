@@ -55,8 +55,8 @@
     "configuration": {
       "colNames": ['yo"Key', "Link, ID", "Name", "Program Owner"],
       "colModel": [
-        {name: "key", index: "key", resizable: true},
-        {name: "link_id", index: "link_id", resizable: true},
+        {name: "key", index: "key", resizable: true, hidden: true},
+        {name: "link_id", index: "link_id", resizable: true, hidden: true},
         {name: "name", index: "name", resizable: true},
         {name: "program_owner", index: "program_owner", resizable: true}
       ],
