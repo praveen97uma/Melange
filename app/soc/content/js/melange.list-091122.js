@@ -552,16 +552,9 @@
                       csv_export[0] = [];
                       //get Columns names
                       if (list_objects[idx].data[0] !== undefined || list_objects[idx].filtered_data[0] !== undefined) {
-                        var iterate_through = list_objects[idx].filtered_data || list_objects[idx].data;
-                        jQuery.each(iterate_through[0], function (column_name, cell_value) {
+                        jQuery.each(list_objects[idx].configuration.colNames, function (column_index, column_name) {
                           // check index for column name
-                          var desc_column_index;
-                          jQuery.each(list_objects[idx].configuration.colModel, function (object_index, object) {
-                            if (object.name === column_name) {
-                              desc_column_index = object_index;
-                            }
-                          });
-                          var field_text = list_objects[idx].configuration.colNames[desc_column_index];
+                          var field_text = column_name;
                           if (field_text.indexOf("\"") !== -1) {
                             field_text = field_text.replace("\"","\"\"");
                           }
