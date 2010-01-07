@@ -72,38 +72,32 @@
     "global_operations": [
       {
         "bounds": [0,"all"],
-        "operation": {
-          "id": "add",
-          "caption": "Add a user",
-          "type": "redirect_simple",
-          "parameters": {
-            "link": "http://add1",
-            "new_window": true
-          }
+        "id": "add",
+        "caption": "Add a user",
+        "type": "redirect_simple",
+        "parameters": {
+          "link": "http://add1",
+          "new_window": true
         }
       },
       {
         "bounds": [1,1],
-        "operation": {
-          "id": "edit",
-          "caption": "Edit user(s)",
-          "type": "redirect_custom",
-          "parameters": {
-            "new_window": true
-          }
+        "id": "edit",
+        "caption": "Edit user(s)",
+        "type": "redirect_custom",
+        "parameters": {
+          "new_window": true
         }
       },
       {
         "bounds": [1,"all"],
-        "operation": {
-          "id": "delete",
-          "caption": "Delete user(s)",
-          "type": "post",
-          "parameters": {
-            "url": "/user/roles",
-            "keys": ["key","link_id"],
-            "refresh": "table"
-          }
+        "id": "delete",
+        "caption": "Delete user(s)",
+        "type": "post",
+        "parameters": {
+          "url": "/user/roles",
+          "keys": ["key","link_id"],
+          "refresh": "table"
         }
       }
     ],
@@ -747,9 +741,8 @@
 
                     // Add global action buttons on the toolbar
                     if (list_objects[idx].global_operations !== undefined) {
-                      jQuery.each(list_objects[idx].global_operations, function (setting_name, setting_value) {
-                        var bounds = setting_value.bounds;
-                        var operation = setting_value.operation;
+                      jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
+                        var bounds = operation.bounds;
                         // create button for global operation
                         var new_button_id = list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id;
                         jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation.caption + "' style='float:left' id='" + new_button_id + "'/>");
@@ -773,12 +766,12 @@
                     list_objects[idx].jqgrid.object.jqGrid('setGridParam',{
                       onSelectRow: function (row_number) {
                           var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selarrrow');
-                          jQuery.each(list_objects[idx].global_operations, function (operation_name, operation) {
+                          jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
                             var handle_all = operation.bounds.indexOf("all");
                             if (handle_all !== -1) {
                               operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
                             }
-                            var button_object = jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id);
+                            var button_object = jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id);
                             if (selected_ids.length >= operation.bounds[0] && selected_ids.length <= operation.bounds[1]) {
                               button_object.removeAttr("disabled");
                               // If this is a per-entity operation, substitute click event for button
@@ -787,8 +780,8 @@
                                 var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_ids[0]);
                                 var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
                                 var partial_click_method = button_object.data('melange').click;
-                                button_object.click(partial_click_method(object.operations[operation.operation.id].link));
-                                button_object.attr("value",object.operations[operation.operation.id].caption);
+                                button_object.click(partial_click_method(object.operations[operation.id].link));
+                                button_object.attr("value",object.operations[operation.id].caption);
                               }
                             }
                             else {
