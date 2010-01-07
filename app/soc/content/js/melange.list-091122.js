@@ -460,7 +460,7 @@
     else if (original_data[0] !== undefined) {
       jQuery.each(original_data[0], function (element_key, element_value) {
         if (postdata[element_key] !== undefined) {
-          temp_data = jLinq.from(temp_data).contains(element_key, postdata[element_key]).select();
+          temp_data = jLinq.from(temp_data).match(element_key, postdata[element_key]).select();
         }
       });
     }
