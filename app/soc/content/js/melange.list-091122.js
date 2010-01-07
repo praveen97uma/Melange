@@ -53,12 +53,13 @@
   var dummy_source = [];
   dummy_source[0] = {
     "configuration": {
-      "colNames": ['yo"Key', "Link, ID", "Name", "Program Owner"],
+      "colNames": ['yo"Key', "Link, ID", "Name", "Program Owner","Read"],
       "colModel": [
         {name: "key", index: "key", resizable: true, hidden: true},
         {name: "link_id", index: "link_id", resizable: true, hidden: true},
         {name: "name", index: "name", resizable: true},
-        {name: "program_owner", index: "program_owner", resizable: true}
+        {name: "program_owner", index: "program_owner", resizable: true},
+        {name: "read", index: "read", resizable: true, stype: "select", editoptions: {value: ":All;Read:Posts Read;Not Read:Posts Unread"}}
       ],
       rowNum: 4,
       rowList: [4, 8],
@@ -108,7 +109,8 @@
             "key": "key_test",
             "link_id": "test",
             "name": "Test Example",
-            "program_owner": "Google"
+            "program_owner": "Google",
+            "read": "Read"
           },
           "operations": {
             "edit": {
@@ -122,7 +124,8 @@
             "key": "key_test2",
             "link_id": "test2",
             "name": "Test Example",
-            "program_owner": "GooglePlex"
+            "program_owner": "GooglePlex",
+            "read": "Not Read"
           },
           "operations": {
             "edit": {
@@ -138,7 +141,8 @@
             "key": "key_test2bis",
             "link_id": "test2bis",
             "name": "Test Example Loaded Incrementally",
-            "program_owner": "Google"
+            "program_owner": "Google",
+            "read": "Read"
           },
           "operations": {
             "edit": {
@@ -152,7 +156,8 @@
             "key": "key_test2tris",
             "link_id": "test2tris",
             "name": "Test Example Loaded Incrementally",
-            "program_owner": "GooglePlex"
+            "program_owner": "GooglePlex",
+            "read": "Not Read"
           },
           "operations": {
             "edit": {
@@ -166,7 +171,8 @@
             "key": "key_2ndpage",
             "link_id": "test2ndpage",
             "name": "Test Example 2nd page",
-            "program_owner": "Google"
+            "program_owner": "Google",
+            "read": "Read"
           },
           "operations": {
             "edit": {
