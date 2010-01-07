@@ -725,7 +725,6 @@
                       }
                     }
 
-
                     // Add global action buttons on the toolbar
                     if (list_objects[idx].global_operations !== undefined) {
                       jQuery.each(list_objects[idx].global_operations, function (setting_name, setting_value) {
@@ -740,6 +739,25 @@
                         jQuery("#" + new_button_id).click(global_button_functions[operation.type](operation.parameters));
                       });
                     }
+
+                    // Disable or enable button depending on how many rows are selected
+                    list_objects[idx].jqgrid.object.jqGrid('setGridParam',{
+                      onSelectRow: function (row_number) {
+                          var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selarrrow');
+                          jQuery.each(list_objects[idx].global_operations, function (operation_name, operation) {
+                            var handle_all = operation.bounds.indexOf("all");
+                            if (handle_all !== -1) {
+                              operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
+                            }
+                            if (selected_ids.length >= operation.bounds[0] && selected_ids.length <= operation.bounds[1]) {
+                              jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id).removeAttr("disabled");
+                            }
+                            else {
+                              jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id).attr("disabled","disabled");
+                            }
+                          });
+                      }
+                    });
 
                     // Add per entity buttons on the toolbar
                     var actions = jLinq.from(list_objects[idx].all_data).is("operations").select();
