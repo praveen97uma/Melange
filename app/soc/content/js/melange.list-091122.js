@@ -59,7 +59,7 @@
         {name: "link_id", index: "link_id", resizable: true, hidden: true},
         {name: "name", index: "name", resizable: true},
         {name: "program_owner", index: "program_owner", resizable: true},
-        {name: "read", index: "read", resizable: true, stype: "select", editoptions: {value: ":All;Read:Posts Read;Not Read:Posts Unread"}}
+        {name: "read", index: "read", resizable: true, stype: "select", editoptions: {value: ":All;^Read$:Posts Read;^Not Read$:Posts Unread"}}
       ],
       rowNum: 4,
       rowList: [4, 8],
