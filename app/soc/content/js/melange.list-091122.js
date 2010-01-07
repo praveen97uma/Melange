@@ -755,29 +755,29 @@
                     // Disable or enable button depending on how many rows are selected
                     list_objects[idx].jqgrid.object.jqGrid('setGridParam',{
                       onSelectRow: function (row_number) {
-                          var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selarrrow');
-                          jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
-                            var handle_all = operation.bounds.indexOf("all");
-                            if (handle_all !== -1) {
-                              operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
+                        var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selarrrow');
+                        jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
+                          var handle_all = operation.bounds.indexOf("all");
+                          if (handle_all !== -1) {
+                            operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
+                          }
+                          var button_object = jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id);
+                          if (selected_ids.length >= operation.bounds[0] && selected_ids.length <= operation.bounds[1]) {
+                            button_object.removeAttr("disabled");
+                            // If this is a per-entity operation, substitute click event for button
+                            if (operation.bounds[0] === 1 && operation.bounds[1] === 1) {
+                              // get current selection
+                              var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_ids[0]);
+                              var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
+                              var partial_click_method = button_object.data('melange').click;
+                              button_object.click(partial_click_method(object.operations[operation.id].link));
+                              button_object.attr("value",object.operations[operation.id].caption);
                             }
-                            var button_object = jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id);
-                            if (selected_ids.length >= operation.bounds[0] && selected_ids.length <= operation.bounds[1]) {
-                              button_object.removeAttr("disabled");
-                              // If this is a per-entity operation, substitute click event for button
-                              if (operation.bounds[0] === 1 && operation.bounds[1] === 1) {
-                                // get current selection
-                                var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_ids[0]);
-                                var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
-                                var partial_click_method = button_object.data('melange').click;
-                                button_object.click(partial_click_method(object.operations[operation.id].link));
-                                button_object.attr("value",object.operations[operation.id].caption);
-                              }
-                            }
-                            else {
-                              button_object.attr("disabled","disabled");
-                            }
-                          });
+                          }
+                          else {
+                            button_object.attr("disabled","disabled");
+                          }
+                        });
                       }
                     });
 
