@@ -556,16 +556,6 @@
             list_objects[idx].jqgrid.options =
               jQuery.extend(cloned_options, {pager: jQuery("#" + pager_id)});
 
-/*            list_objects[idx].jqgrid.options.onSelectRow = function (row_number) {
-              var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',row_number);
-              var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
-              jQuery.each(object.operations, function (operation_name, operation_object) {
-                var new_location = operation_object.new_window ? 'window.open("' + operation_object.link + '")' : 'window.location.href = "' + operation_object.link + '"';
-                jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation_name).remove();
-                jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation_object.caption + "' style='float:left' id='" + list_objects[idx].jqgrid.id +"_buttonOp_" + operation_name + "' onclick = '" + new_location + "'/>");
-              });
-            }*/
-
             list_objects[idx].pager = {};
             list_objects[idx].pager.id = pager_id;
             list_objects[idx].pager.options = default_pager_options;
