@@ -711,7 +711,7 @@
                           });
                           jQuery.post(
                             parameters.url,
-                            {data: objects_to_send},
+                            {data: JSON.stringify(objects_to_send)},
                             function (data) {
                               if (parameters.refresh == "table") {
                                 jQuery("#" + list_objects[parameters.idx].jqgrid.id).trigger("reloadGrid");
