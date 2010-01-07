@@ -62,7 +62,6 @@
       ],
       rowNum: 4,
       rowList: [4, 8],
-      multiselect: true,
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc",
@@ -702,7 +701,9 @@
                       },
                       post: function (parameters) {
                         return function () {
-                          var selected_ids = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getGridParam','selarrrow');
+                          var option_name = list_objects[idx].jqgrid.object.jqGrid('getGridParam','multiselect') ? 'selarrrow' : 'selrow'
+                          var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam',option_name);
+                          if (!selected_ids instanceof Array) selected_ids = [selected_ids];
                           var objects_to_send = [];
                           if (!selected_ids.length) {
                             return;
@@ -755,7 +756,9 @@
                     // Disable or enable button depending on how many rows are selected
                     list_objects[idx].jqgrid.object.jqGrid('setGridParam',{
                       onSelectRow: function (row_number) {
-                        var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selarrrow');
+                        var option_name = list_objects[idx].jqgrid.object.jqGrid('getGridParam','multiselect') ? 'selarrrow' : 'selrow'
+                        var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam',option_name);
+                        if (!selected_ids instanceof Array) selected_ids = [selected_ids];
                         jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
                           var handle_all = operation.bounds.indexOf("all");
                           if (handle_all !== -1) {
