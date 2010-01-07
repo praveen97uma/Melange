@@ -700,6 +700,9 @@
                         return function () {
                           var selected_ids = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getGridParam','selarrrow');
                           var objects_to_send = [];
+                          if (!selected_ids.length) {
+                            return;
+                          }
                           jQuery.each(selected_ids, function (id_index, id) {
                             var row = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getRowData',id);
                             var object = jLinq.from(list_objects[parameters.idx].all_data).equals("columns.key",row.key).select()[0];
