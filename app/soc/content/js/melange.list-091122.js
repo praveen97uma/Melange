@@ -62,6 +62,7 @@
       ],
       rowNum: 4,
       rowList: [4, 8],
+      multiselect: true,
       autowidth: true,
       sortname: "link_id",
       sortorder: "asc",
@@ -440,58 +441,7 @@
       toolbar: [true, "top"]
     },
     "data": {
-      "": [
-        {
-          "columns": {
-            "key": "key_test10",
-            "link_id": "test10",
-            "name": "Student Test Example",
-            "program_owner": "Google"
-          },
-          "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
-            "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
-              "new_window": true
-            }
-          }
-        },
-        {
-          "columns": {
-            "key": "key_test11",
-            "link_id": "test11",
-            "name": "Student Test Example",
-            "program_owner": "GooglePlex"
-          },
-          "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
-            "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
-              "new_window": true
-            }
-          }
-        }
-      ]
+      "": []
     }
   };
 
@@ -733,7 +683,7 @@
                   catch (SyntaxError) {
                     source = dummy_source[idx];
                   }
-                  if (source.data[start] !== undefined && source.data[start].length) {
+                  if (source.data[start] !== undefined) {
                     //console.debug("data present, including");
                     if (list_objects[idx].configuration === undefined) {
                       list_objects[idx].configuration = source.configuration;
@@ -810,6 +760,9 @@
                     if (my_data[(my_data.length- 1)] !== undefined) {
                       start = my_data[(my_data.length - 1)].columns.key;
                       setTimeout(looping, 100);
+                    }
+                    else {
+                      jQuery("#load_" + list_objects[idx].jqgrid.id).hide();
                     }
                   }
                   else {
