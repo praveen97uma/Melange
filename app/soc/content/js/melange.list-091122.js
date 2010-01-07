@@ -69,6 +69,33 @@
       height: "auto",
       toolbar: [true, "top"]
     },
+    "global_operations": [
+      {
+        "bounds": [0,"all"],
+        "operation": {
+          "id": "add",
+          "caption": "Add a user",
+          "type": "redirect_simple",
+          "parameters": {
+            "link": "http://add1",
+            "new_window": true
+          }
+        }
+      },
+      {
+        "bounds": [1,"all"],
+        "operation": {
+          "id": "delete",
+          "caption": "Delete user(s)",
+          "type": "post",
+          "parameters": {
+            "url": "user/roles",
+            "keys": ["key","link_id"],
+            "refresh": "table"
+          }
+        }
+      }
+    ],
     "data": {
       "": [
         {
@@ -79,20 +106,10 @@
             "program_owner": "Google"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add1",
-              "new_window": true
-            },
-            "edit": {
+            "bbbb": {
               "caption": "Edit a user",
               "link": "http://edit1",
               "new_window": false
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete1",
-              "new_window": true
             }
           }
         },
@@ -104,19 +121,9 @@
             "program_owner": "GooglePlex"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add2",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit2",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete2",
               "new_window": true
             }
           }
@@ -131,19 +138,9 @@
             "program_owner": "Google"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -156,19 +153,9 @@
             "program_owner": "GooglePlex"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -181,19 +168,9 @@
             "program_owner": "Google"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -227,19 +204,9 @@
             "program_owner": "melange"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -252,19 +219,9 @@
             "program_owner": "google1"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -279,19 +236,9 @@
             "program_owner": "google1"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -306,19 +253,9 @@
             "program_owner": "google1"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -352,19 +289,9 @@
             "program_owner": "melange"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -377,19 +304,9 @@
             "program_owner": "google1"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -404,19 +321,9 @@
             "program_owner": "google1"
           },
           "operations": {
-            "add": {
-              "caption": "Add a user",
-              "link": "http://add",
-              "new_window": true
-            },
             "edit": {
               "caption": "Edit a user",
               "link": "http://edit",
-              "new_window": true
-            },
-            "delete": {
-              "caption": "Delete a User",
-              "link": "http://delete",
               "new_window": true
             }
           }
@@ -648,7 +555,8 @@
             var cloned_options = jQuery.extend({}, default_jqgrid_options);
             list_objects[idx].jqgrid.options =
               jQuery.extend(cloned_options, {pager: jQuery("#" + pager_id)});
-            list_objects[idx].jqgrid.options.onSelectRow = function (row_number) {
+
+/*            list_objects[idx].jqgrid.options.onSelectRow = function (row_number) {
               var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',row_number);
               var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
               jQuery.each(object.operations, function (operation_name, operation_object) {
@@ -656,7 +564,7 @@
                 jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation_name).remove();
                 jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation_object.caption + "' style='float:left' id='" + list_objects[idx].jqgrid.id +"_buttonOp_" + operation_name + "' onclick = '" + new_location + "'/>");
               });
-            }
+            }*/
 
             list_objects[idx].pager = {};
             list_objects[idx].pager.id = pager_id;
@@ -687,6 +595,9 @@
                     //console.debug("data present, including");
                     if (list_objects[idx].configuration === undefined) {
                       list_objects[idx].configuration = source.configuration;
+                    }
+                    if (list_objects[idx].global_operations === undefined) {
+                      list_objects[idx].global_operations = source.global_operations;
                     }
                     var my_data = source.data[start];
                     jQuery.each(my_data, function () {
@@ -770,6 +681,67 @@
 
                     //loading data finished, hiding loading message
                     jQuery("#load_" + list_objects[idx].jqgrid.id).hide();
+
+                    // function defines for global buttons
+                    var global_button_functions = {
+                      redirect_simple : function (parameters) {
+                        if (parameters.new_window) {
+                          return function () {
+                            window.open(parameters.link);
+                          }
+                        }
+                        else {
+                          return function () {
+                            window.location.href = parameters.link;
+                          }
+                        }
+                      },
+                      post: function (parameters) {
+                        return function () {
+                          var selected_ids = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getGridParam','selarrrow');
+                          var objects_to_send = [];
+                          jQuery.each(selected_ids, function (id_index, id) {
+                            var row = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getRowData',id);
+                            var object = jLinq.from(list_objects[parameters.idx].all_data).equals("columns.key",row.key).select()[0];
+                            var single_object = {};
+                            jQuery.each(parameters.keys, function (key_index, column_name) {
+                              single_object[column_name] = row[column_name];
+                            });
+                            objects_to_send.push(single_object);
+                          });
+                          jQuery.post(
+                            parameters.url,
+                            {data: objects_to_send},
+                            function (data) {
+                              if (parameters.refresh == "table") {
+                                jQuery("#" + list_objects[parameters.idx].jqgrid.id).trigger("reloadGrid");
+                              }
+                            } 
+                          )
+                        }
+                      }
+                    }
+
+
+                    // Add global action buttons on the toolbar
+                    if (list_objects[idx].global_operations !== undefined) {
+                      jQuery.each(list_objects[idx].global_operations, function (setting_name, setting_value) {
+                        var bounds = setting_value.bounds;
+                        var operation = setting_value.operation;
+                        // create button for global operation
+                        var new_button_id = list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id;
+                        jQuery("#t_" + list_objects[idx].jqgrid.id).append("<input type='button' value='" + operation.caption + "' style='float:left' id='" + new_button_id + "'/>");
+
+                        operation.parameters.idx = idx;
+                        // associate action
+                        jQuery("#" + new_button_id).click(global_button_functions[operation.type](operation.parameters));
+                      });
+                    }
+
+                    // Add per entity buttons on the toolbar
+                    var actions = jLinq.from(list_objects[idx].all_data).is("operations").select();
+                    jQuery.each(actions, function (key_name, object) {
+                    });
 
                     //Add CSV Export button only once all data is loaded
 
