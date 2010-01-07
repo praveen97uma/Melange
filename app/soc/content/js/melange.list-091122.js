@@ -89,7 +89,7 @@
           "caption": "Delete user(s)",
           "type": "post",
           "parameters": {
-            "url": "user/roles",
+            "url": "/user/roles",
             "keys": ["key","link_id"],
             "refresh": "table"
           }
