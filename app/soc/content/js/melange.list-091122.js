@@ -83,6 +83,17 @@
         }
       },
       {
+        "bounds": [1,1],
+        "operation": {
+          "id": "edit",
+          "caption": "Edit user(s)",
+          "type": "redirect_custom",
+          "parameters": {
+            "new_window": true
+          }
+        }
+      },
+      {
         "bounds": [1,"all"],
         "operation": {
           "id": "delete",
@@ -106,10 +117,9 @@
             "program_owner": "Google"
           },
           "operations": {
-            "bbbb": {
-              "caption": "Edit a user",
-              "link": "http://edit1",
-              "new_window": false
+            "edit": {
+              "caption": "Edit key_test user",
+              "link": "http://edit1"
             }
           }
         },
@@ -122,9 +132,8 @@
           },
           "operations": {
             "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit2",
-              "new_window": true
+              "caption": "Edit key_test2 user",
+              "link": "http://edit2"
             }
           }
         }
@@ -139,9 +148,8 @@
           },
           "operations": {
             "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit",
-              "new_window": true
+              "caption": "Edit key_test2bis user",
+              "link": "http://edit"
             }
           }
         },
@@ -154,9 +162,8 @@
           },
           "operations": {
             "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit",
-              "new_window": true
+              "caption": "Edit key_test2tris user",
+              "link": "http://edit"
             }
           }
         },
@@ -169,9 +176,8 @@
           },
           "operations": {
             "edit": {
-              "caption": "Edit a user",
-              "link": "http://edit",
-              "new_window": true
+              "caption": "Edit key_2ndpage user",
+              "link": "http://edit"
             }
           }
         }
@@ -696,6 +702,20 @@
                           }
                         }
                       },
+                      redirect_custom: function (parameters) {
+                        return function (link) {
+                          if (parameters.new_window) {
+                            return function () {
+                              window.open(link);
+                            }
+                          }
+                          else {
+                            return function () {
+                              window.location.href = link;
+                            }
+                          }
+                        };
+                      },
                       post: function (parameters) {
                         return function () {
                           var selected_ids = jQuery("#" + list_objects[parameters.idx].jqgrid.id).jqGrid('getGridParam','selarrrow');
@@ -719,7 +739,7 @@
                               if (parameters.refresh == "table") {
                                 jQuery("#" + list_objects[parameters.idx].jqgrid.id).trigger("reloadGrid");
                               }
-                            } 
+                            }
                           )
                         }
                       }
@@ -737,6 +757,15 @@
                         operation.parameters.idx = idx;
                         // associate action
                         jQuery("#" + new_button_id).click(global_button_functions[operation.type](operation.parameters));
+                        // If this is a partial function, than store it in a safe place
+                        if (operation.type == "redirect_custom") {
+                          jQuery("#" + new_button_id).data(
+                            'melange',
+                            {
+                              click: global_button_functions[operation.type](operation.parameters)
+                            }
+                          );
+                        }
                       });
                     }
 
@@ -749,19 +778,24 @@
                             if (handle_all !== -1) {
                               operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
                             }
+                            var button_object = jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id);
                             if (selected_ids.length >= operation.bounds[0] && selected_ids.length <= operation.bounds[1]) {
-                              jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id).removeAttr("disabled");
+                              button_object.removeAttr("disabled");
+                              // If this is a per-entity operation, substitute click event for button
+                              if (operation.bounds[0] === 1 && operation.bounds[1] === 1) {
+                                // get current selection
+                                var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_ids[0]);
+                                var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
+                                var partial_click_method = button_object.data('melange').click;
+                                button_object.click(partial_click_method(object.operations[operation.operation.id].link));
+                                button_object.attr("value",object.operations[operation.operation.id].caption);
+                              }
                             }
                             else {
-                              jQuery("#" + list_objects[idx].jqgrid.id + "_buttonOp_" + operation.operation.id).attr("disabled","disabled");
+                              button_object.attr("disabled","disabled");
                             }
                           });
                       }
-                    });
-
-                    // Add per entity buttons on the toolbar
-                    var actions = jLinq.from(list_objects[idx].all_data).is("operations").select();
-                    jQuery.each(actions, function (key_name, object) {
                     });
 
                     //Add CSV Export button only once all data is loaded
