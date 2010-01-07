@@ -66,6 +66,7 @@
       sortname: "link_id",
       sortorder: "asc",
       height: "auto",
+      multiselect: true,
       toolbar: [true, "top"]
     },
     "global_operations": [
