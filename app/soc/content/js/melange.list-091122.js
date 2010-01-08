@@ -70,38 +70,46 @@
       multiselect: true,
       toolbar: [true, "top"]
     },
-    "global_operations": [
-      {
-        "bounds": [0,"all"],
-        "id": "add",
-        "caption": "Add a user",
-        "type": "redirect_simple",
-        "parameters": {
-          "link": "http://add1",
-          "new_window": true
+    "operations": {
+      "buttons": [
+        {
+          "bounds": [0,"all"],
+          "id": "add",
+          "caption": "Add a user",
+          "type": "redirect_simple",
+          "parameters": {
+            "link": "http://add1",
+            "new_window": true
+          }
+        },
+        {
+          "bounds": [1,1],
+          "id": "edit",
+          "caption": "Edit user(s)",
+          "type": "redirect_custom",
+          "parameters": {
+            "new_window": true
+          }
+        },
+        {
+          "bounds": [1,"all"],
+          "id": "delete",
+          "caption": "Delete user(s)",
+          "type": "post",
+          "parameters": {
+            "url": "/user/roles",
+            "keys": ["key","link_id"],
+            "refresh": "table"
+          }
         }
-      },
-      {
-        "bounds": [1,1],
-        "id": "edit",
-        "caption": "Edit user(s)",
+      ],
+      "row" : {
         "type": "redirect_custom",
         "parameters": {
           "new_window": true
         }
-      },
-      {
-        "bounds": [1,"all"],
-        "id": "delete",
-        "caption": "Delete user(s)",
-        "type": "post",
-        "parameters": {
-          "url": "/user/roles",
-          "keys": ["key","link_id"],
-          "refresh": "table"
-        }
       }
-    ],
+    },
     "data": {
       "": [
         {
@@ -113,9 +121,14 @@
             "read": "Read"
           },
           "operations": {
-            "edit": {
-              "caption": "Edit key_test user",
-              "link": "http://edit1"
+            "buttons": {
+              "edit": {
+                "caption": "Edit key_test user",
+                "link": "http://edit1"
+              }
+            },
+            "row": {
+              "link": "http://my_row_edit_link"
             }
           }
         },
@@ -592,8 +605,8 @@
                     if (list_objects[idx].configuration === undefined) {
                       list_objects[idx].configuration = source.configuration;
                     }
-                    if (list_objects[idx].global_operations === undefined) {
-                      list_objects[idx].global_operations = source.global_operations;
+                    if (list_objects[idx].operations === undefined) {
+                      list_objects[idx].operations = source.operations;
                     }
                     var my_data = source.data[start];
                     jQuery.each(my_data, function () {
@@ -738,8 +751,8 @@
                     }
 
                     // Add global action buttons on the toolbar
-                    if (list_objects[idx].global_operations !== undefined) {
-                      jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
+                    if (list_objects[idx].operations !== undefined && list_objects[idx].operations.buttons !== undefined) {
+                      jQuery.each(list_objects[idx].operations.buttons, function (setting_index, operation) {
                         var bounds = operation.bounds;
                         // create button for global operation
                         var new_button_id = list_objects[idx].jqgrid.id + "_buttonOp_" + operation.id;
@@ -766,7 +779,7 @@
                         var option_name = list_objects[idx].jqgrid.object.jqGrid('getGridParam','multiselect') ? 'selarrrow' : 'selrow'
                         var selected_ids = list_objects[idx].jqgrid.object.jqGrid('getGridParam',option_name);
                         if (!selected_ids instanceof Array) selected_ids = [selected_ids];
-                        jQuery.each(list_objects[idx].global_operations, function (setting_index, operation) {
+                        jQuery.each(list_objects[idx].operations.buttons, function (setting_index, operation) {
                           var handle_all = operation.bounds.indexOf("all");
                           if (handle_all !== -1) {
                             operation.bounds[handle_all] = list_objects[idx].jqgrid.object.jqGrid('getGridParam','records');
@@ -780,8 +793,8 @@
                               var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_ids[0]);
                               var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
                               var partial_click_method = button_object.data('melange').click;
-                              button_object.click(partial_click_method(object.operations[operation.id].link));
-                              button_object.attr("value",object.operations[operation.id].caption);
+                              button_object.click(partial_click_method(object.operations.buttons[operation.id].link));
+                              button_object.attr("value",object.operations.buttons[operation.id].caption);
                             }
                           }
                           else {
