@@ -804,6 +804,51 @@
                       }
                     });
 
+                    //Add row action if present and multiselect is false
+                    var multiselect = list_objects[idx].jqgrid.object.jqGrid('getGridParam','multiselect');
+                    if (!multiselect && list_objects[idx].operations !== undefined && list_objects[idx].operations.row !== undefined) {
+                      var operation = list_objects[idx].operations.row;
+
+                      var row_functions = {
+                        redirect_custom: function (parameters) {
+                          return function (link) {
+                            if (parameters.new_window) {
+                              return function () {
+                                window.open(link);
+                              }
+                            }
+                            else {
+                              return function () {
+                                window.location.href = link;
+                              }
+                            }
+                          };
+                        }
+                      }
+                      operation.parameters.idx = idx;
+
+                      // If this is a partial function, than store it in a safe place
+                      if (operation.type == "redirect_custom") {
+                        list_objects[idx].jqgrid.object.data(
+                          'melange',
+                          {
+                            rowsel: row_functions[operation.type](operation.parameters)
+                          }
+                        );
+                      }
+                      // associate action to row
+                      list_objects[idx].jqgrid.object.jqGrid('setGridParam',{
+                        onSelectRow: function (row_number) {
+                          var selected_id = list_objects[idx].jqgrid.object.jqGrid('getGridParam','selrow');
+                          // get current selection
+                          var row = jQuery("#" + list_objects[idx].jqgrid.id).jqGrid('getRowData',selected_id);
+                          var object = jLinq.from(list_objects[idx].all_data).equals("columns.key",row.key).select()[0];
+                          var partial_row_method = list_objects[idx].jqgrid.object.data('melange').rowsel;
+                          partial_row_method(object.operations.row.link)();
+                        }
+                      });
+                    }
+
                     //Add CSV Export button only once all data is loaded
 
                     //Add some padding at the bottom of the toolbar to display buttons correctly
