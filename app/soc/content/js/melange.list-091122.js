@@ -149,51 +149,6 @@
         }
       ],
       "key_test2": [
-        {
-          "columns": {
-            "key": "key_test2bis",
-            "link_id": "test2bis",
-            "name": "Test Example Loaded Incrementally",
-            "program_owner": "Google",
-            "read": "Read"
-          },
-          "operations": {
-            "edit": {
-              "caption": "Edit key_test2bis user",
-              "link": "http://edit"
-            }
-          }
-        },
-        {
-          "columns": {
-            "key": "key_test2tris",
-            "link_id": "test2tris",
-            "name": "Test Example Loaded Incrementally",
-            "program_owner": "GooglePlex",
-            "read": "Not Read"
-          },
-          "operations": {
-            "edit": {
-              "caption": "Edit key_test2tris user",
-              "link": "http://edit"
-            }
-          }
-        },
-        {
-          "columns": {
-            "key": "key_2ndpage",
-            "link_id": "test2ndpage",
-            "name": "Test Example 2nd page",
-            "program_owner": "Google",
-            "read": "Read"
-          },
-          "operations": {
-            "edit": {
-              "caption": "Edit key_2ndpage user",
-              "link": "http://edit"
-            }
-          }
-        }
       ]
     }
   };
@@ -600,7 +555,10 @@
                   catch (SyntaxError) {
                     source = dummy_source[idx];
                   }
-                  if (source.data[start] !== undefined) {
+                  var first_batch_received = list_objects[idx].configuration !== undefined;
+                  var data_received = source.data[start] !== undefined;
+                  var last_batch = !source.data[start].length;
+                  if (data_received && (!first_batch_received || !last_batch)) {
                     //console.debug("data present, including");
                     if (list_objects[idx].configuration === undefined) {
                       list_objects[idx].configuration = source.configuration;
