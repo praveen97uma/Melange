@@ -681,14 +681,14 @@ class View(object):
       filter: a filter that all displayed entities should satisfy
     """
     view_params = view.getParams().copy()
-    view_params['list_action'] = (redirect, params)
     view_params['list_description'] = self.DEF_CREATE_INSTRUCTION_MSG_FMT % (
         view_params['name'], self._params['name'])
+    view_params['public_row_extra'] = lambda *args: {
+        'link': redirect(*args)
+    }
 
-    content = helper.lists.getListContent(request, view_params, filter=filter)
-    contents = [content]
-
-    return self._list(request, params, contents, page_name)
+    return self.list(request, 'any_access', page_name=page_name,
+                     params=params, filter=filter)
 
   def _getData(self, model, filter, order, logic):
     """Retrieves the pick data for this query.
