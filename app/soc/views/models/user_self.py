@@ -223,17 +223,27 @@ class View(base.View):
 
     super(View, self)._editPost(request, entity, fields)
 
-  def getRolesListData(self, request, fields):
-    fields = fields.copy()
+  def getRolesListData(self, request):
+    """Returns the list data for roles.
+    """
+
+    user = user_logic.getForCurrentAccount()
+
+    # only select the roles for the current user
+    # pylint: disable-msg=E1103
+    fields = {
+        'link_id': user.link_id,
+        'status': ['active', 'inactive']
+        }
+
     keys = role_view.ROLE_VIEWS.keys()
     keys.sort()
 
-    get_args = request.GET
+    idx = request.GET.get('idx', '')
+    idx = int(idx) if idx.isdigit() else -1
 
-    idx = get_args.get('idx', '')
-
-    if not idx.isdigit():
-      return False
+    if not 0 <= idx < len(keys):
+        return responses.jsonErrorResponse(request, "idx not valid")
 
     idx = int(idx)
     key = keys[idx]
@@ -241,7 +251,8 @@ class View(base.View):
 
     contents = helper.lists.getListData(request, list_params, fields)
 
-    return contents
+    json = simplejson.dumps(contents)
+    return responses.jsonResponse(request, json)
 
   @decorators.merge_params
   @decorators.check_access
@@ -257,30 +268,8 @@ class View(base.View):
       kwargs: not used
     """
 
-    get_args = request.GET
-
-    user = user_logic.getForCurrentAccount()
-
-    # only select the roles for the current user
-    # pylint: disable-msg=E1103
-    fields = {
-        'link_id': user.link_id,
-        'status': ['active', 'inactive']
-        }
-
-    # role_view.ROLE_VIEWS
-
-    fmt = get_args.get('fmt')
-
-    if fmt == 'json':
-      contents = self.getRolesListData(request, fields)
-
-      if contents is False:
-        return responses.jsonErrorResponse(request, "idx not valid")
-
-      json = simplejson.dumps(contents)
-
-      return responses.jsonResponse(request, json)
+    if request.GET.get('fmt') == 'json':
+      return self.getRolesListData(request)
 
     contents = []
 
