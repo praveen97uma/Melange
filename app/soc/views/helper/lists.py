@@ -214,6 +214,15 @@ def getListData(request, params, fields, visibility=None, order=[], args=[]):
   column = params.get('%s_field_extra' % visibility, lambda *args: {})
   button = params.get('%s_button_extra' % visibility, lambda *args: {})
   row = params.get('%s_row_extra' % visibility, lambda *args: {})
+  ignore = params.get('%s_field_ignore' % visibility, [])
+
+  for field in ignore:
+    if field not in key_order:
+      continue
+
+    pos = key_order.index(field)
+    key_order = key_order[:pos] + key_order[pos+1:]
+    col_names = col_names[:pos] + col_names[pos+1:]
 
   # TODO(SRabbelier): remove debug code, error instead
   if not (key_order and col_names):
