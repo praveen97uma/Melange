@@ -145,7 +145,7 @@ class View(organization.View):
   def _public(self, request, entity, context):
     """See base.View._public().
     """
-
+#TODO(LIST)
     from soc.modules.ghop.views.models import task as ghop_task_view
 
     contents = []
@@ -163,7 +163,9 @@ class View(organization.View):
       to_params = ghop_task_view.view.getParams().copy()
 
       # define the list redirect action to show the task public page
-      to_params['list_action'] = (redirects.getPublicRedirect, to_params)
+      to_params['public_row_extra'] = lambda entity: {
+          'link': redirects.getPublicRedirect(entity, to_params)
+      }
       to_params['list_description'] = self.DEF_OPEN_PROJECTS_MSG_FMT % (
           entity.name)
       to_params['list_heading'] = 'modules/ghop/task/list/heading.html'
