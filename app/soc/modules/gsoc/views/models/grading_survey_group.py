@@ -134,6 +134,32 @@ class View(base.View):
 
     new_params['record_edit_form'] = record_edit_form
 
+    new_params['public_field_keys'] = ["name", "last_update_started",
+                                       "last_update_completed"]
+    new_params['public_field_names'] = ["Name", "Last update started",
+                                        "Last update completed"]
+
+    new_params['records_field_extra'] = lambda entity: {
+        "project_title": entity.project.title,
+        "student_name": "%s (%s)" % (entity.project.student.name,
+                                     entity.project.student.link_id),
+        "organization": entity.project.name,
+        "mentor_name": "%s (%s)" % (entity.project.mentor.name,
+                                     entity.project.mentor.link_id),
+        "final_grade": entity.grade_decision.capitalize(),
+        "mentor_grade": ("Pass" if entity.mentor_record.grade else "Fail") if
+            entity.mentor_record else "Not Available",
+        "student_eval": "Yes" if entity.student_record else "Not Available",
+    }
+    new_params['records_field_keys'] = [
+        "project_title", "student_name", "organization", "mentor_name",
+        "final_grade", "mentor_grade", "student_eval", "locked"
+    ]
+    new_params['records_field_names'] = [
+        "Project Name", "Student (link id)","Organization", "Mentor (link id)",
+        "Final Grade", "Mentor Grade", "Student Eval", "Locked"
+    ]
+
     params = dicts.merge(params, new_params)
 
     super(View, self).__init__(params=params)
@@ -324,9 +350,10 @@ class View(base.View):
     list_params['logic'] = record_logic
     list_params['list_heading'] = params['records_heading_template']
     list_params['list_row'] = params['records_row_template']
-    list_params['list_action'] = (redirects.getEditGradingRecordRedirect,
-                                  list_params)
-
+    list_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getEditGradingRecordRedirect(entity, list_params)
+    }
+# TODO(LIST)
     fields = {'grading_survey_group': entity}
 
     # list all records with grading_decision set to pass
@@ -508,21 +535,19 @@ class View(base.View):
     list_params['logic'] = record_logic
     list_params['list_heading'] = params['records_heading_template']
     list_params['list_row'] = params['records_row_template']
-    list_params['list_action'] = (redirects.getEditGradingRecordRedirect,
-                                  list_params)
-
+    list_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getEditGradingRecordRedirect(entity, list_params)
+    }
+# TODO(LIST)
     fields = {'grading_survey_group': survey_group}
 
     # get the list content for all records
     list_params['list_description'] = \
         'List of all GradingRecords. Pick one to edit it.'
-    list_content = lists.getListContent(
-        request, list_params, fields, idx=0)
-
-    contents = [list_content]
 
     # return the view which renders the set content
-    return self._list(request, list_params, contents, page_name)
+    return self.list(request, 'any_access', page_name=page_name,
+                     params=list_params)
 
 
 view = View()

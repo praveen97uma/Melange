@@ -28,6 +28,7 @@ __authors__ = [
 
 from django import forms
 from django.utils import simplejson
+from django.utils import html
 from django.utils.translation import ugettext
 
 from soc.logic import cleaning
@@ -154,9 +155,28 @@ class View(group.View):
 
     new_params['mentor_role_name'] = 'mentor'
 
+    new_params['public_field_extra'] = lambda entity: {
+        'ideas': lists.urlize(entity.ideas),
+    }
+
     params = dicts.merge(params, new_params)
 
     super(View, self).__init__(params=params)
+
+    self._params['public_field_keys'] = self._params['select_field_keys'] = [
+        "name", "link_id", "short_name", "ideas"
+    ]
+    self._params['public_field_names'] = self._params['select_field_names'] = [
+        "Name", "Link ID", "Short Name", "Ideas Page"
+    ]
+    self._params['select_row_action'] = {
+        "type": "redirect_custom",
+        "parameters": dict(new_window=True),
+    }
+    self._params['select_row_extra'] = lambda entity: {
+        "link": redirects.getRequestRedirectForRole(
+            entity, params['mentor_url_name'])
+    }
 
     # create and store the special form for applicants
     updated_fields = {
@@ -187,16 +207,13 @@ class View(group.View):
     """
 
     list_params = params.copy()
-    list_params['list_action'] = (redirects.getRequestRedirectForRole,
-                                  params['mentor_url_name'])
     list_params['list_description'] = ugettext('Choose an Organization which '
         'you want to become a Mentor for.')
-
     filter = {'scope_path': kwargs['scope_path'],
               'status' : 'active'}
 
     return self.list(request, access_type,
-        page_name, params=list_params, filter=filter)
+        page_name, params=list_params, filter=filter, visibility='select')
 
 
   @decorators.merge_params
@@ -220,9 +237,13 @@ class View(group.View):
     params = params.copy()
 
     if is_host:
-      params['list_action'] = (redirects.getAdminRedirect, params)
+      params['public_row_extra'] = lambda entity: {
+          'link': redirects.getAdminRedirect(entity, params)
+      }
     else:
-      params['list_action'] = (redirects.getPublicRedirect, params)
+      params['public_row_extra'] = lambda entity: {
+          'link': redirects.getPublicRedirect(entity, params)
+      }
 
     new_filter = {}
 
@@ -230,10 +251,8 @@ class View(group.View):
     new_filter['status'] = 'active'
     filter = dicts.merge(filter, new_filter)
 
-    content = lists.getListContent(request, params, filter)
-    contents = [content]
-
-    return self._list(request, params, contents, page_name)
+    return self.list(request, 'any_access', page_name=page_name,
+                      params=params, filter=filter)
 
   def _getMapData(self, filter=None):
     """Constructs the JSON object required to generate 
@@ -333,12 +352,14 @@ class View(group.View):
       ap_params = student_project_view.view.getParams().copy()
 
       # define the list redirect action to show the notification
-      ap_params['list_action'] = (redirects.getPublicRedirect, ap_params)
+      ap_params['public_row_extra'] = lambda entity: {
+          'link': (redirects.getPublicRedirect, ap_params)
+      }
       ap_params['list_description'] = self.DEF_ACCEPTED_PROJECTS_MSG_FMT % (
           entity.name)
       ap_params['list_heading'] = 'soc/student_project/list/heading.html'
       ap_params['list_row'] = 'soc/student_project/list/row.html'
-
+# TODO(LIST)
       # only show projects that have not failed
       filter = {'scope': entity,
                 'status': ['accepted', 'completed']}

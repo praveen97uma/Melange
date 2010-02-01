@@ -173,6 +173,9 @@ class View(presence.View):
 
     new_params['references'] = document_references
 
+    new_params['public_field_keys'] = ["name", "scope_path"]
+    new_params['public_field_names'] = ["Program Name", "Program Owner"]
+
     params = dicts.merge(params, new_params, sub_merge=True)
 
     super(View, self).__init__(params=params)
@@ -205,7 +208,7 @@ class View(presence.View):
       # only cache if all profiles are created
       fun =  soc.cache.logic.cache(self._getData)
       entities = fun(org_logic.getModel(), filter, order, org_logic)
-
+# TODO(LIST)
     result = dicts.rename(ao_params, ao_params['list_params'])
     result['action'] = (redirects.getHomeRedirect, ao_params)
     result['description'] = description

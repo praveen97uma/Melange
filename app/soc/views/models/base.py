@@ -512,8 +512,9 @@ class View(object):
 
   @decorators.merge_params
   @decorators.check_access
-  def list(self, request, access_type, page_name=None, params=None,
-           filter=None, order=None, prefetch=None, **kwargs):
+  def list(self, request, access_type, page_name=None,
+           params=None, filter=None, order=None, prefetch=None,
+           visibility=None, context=None, **kwargs):
     """Displays the list page for the entity type.
 
     Args:
@@ -531,11 +532,23 @@ class View(object):
       the _list method. See the docstring for _list on how it uses it.
     """
 
-    content = helper.lists.getListContent(request, params, filter,
-                                          order=order, prefetch=prefetch)
+    get_args = request.GET
+    fmt = get_args.get('fmt')
+    idx = get_args.get('idx', '')
+
+    if fmt == 'json':
+      if not (idx.isdigit() and int(idx) == 0):
+        return responses.jsonErrorResponse(request, "idx not valid")
+
+      contents = helper.lists.getListData(request, params, filter, visibility)
+      json = simplejson.dumps(contents)
+
+      return responses.jsonResponse(request, json)
+
+    content = helper.lists.getListGenerator(request, params, idx=0)
     contents = [content]
 
-    return self._list(request, params, contents, page_name)
+    return self._list(request, params, contents, page_name, context=context)
 
   def _list(self, request, params, contents, page_name, context=None):
     """Returns the list page for the specified contents.
@@ -669,14 +682,14 @@ class View(object):
       filter: a filter that all displayed entities should satisfy
     """
     view_params = view.getParams().copy()
-    view_params['list_action'] = (redirect, params)
     view_params['list_description'] = self.DEF_CREATE_INSTRUCTION_MSG_FMT % (
         view_params['name'], self._params['name'])
+    view_params['public_row_extra'] = lambda entity, *args: {
+        'link': redirect(entity, params, *args)
+    }
 
-    content = helper.lists.getListContent(request, view_params, filter=filter)
-    contents = [content]
-
-    return self._list(request, params, contents, page_name)
+    return self.list(request, 'any_access', page_name=page_name,
+                     params=view_params, filter=filter)
 
   def _getData(self, model, filter, order, logic):
     """Retrieves the pick data for this query.
@@ -744,19 +757,7 @@ class View(object):
     else:
       json = data
 
-    context = {'json': json}
-    template = 'soc/json.html'
-
-    response_args = {'mimetype': 'application/json'}
-    headers = {'Cache-Control': 'no-store, no-cache, must-revalidate, '
-                                'post-check=0, pre-check=0',  # HTTP/1.1, IE7
-               'Pragma': 'no-cache',  # HTTP/1.0
-               'Content-Type': 'application/json', }
-
-    response = responses.respond(request, template, context, response_args,
-                                 headers)
-
-    return response
+    return responses.jsonResponse(request, json)
 
   def csv(self, request, data, filename, params, key_order=None):
     """Returns data as a csv file.

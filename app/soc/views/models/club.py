@@ -104,6 +104,9 @@ class View(group.View):
     new_params['edit_extra_dynaproperties'] = {
         'clean' : (lambda x: x.cleaned_data)}
 
+    new_params['public_field_keys'] = ["name", "link_id", "short_name"]
+    new_params['public_field_names'] = ["Name", "Link ID", "Short name"]
+
     params = dicts.merge(params, new_params)
 
     super(View, self).__init__(params=params)
@@ -136,8 +139,9 @@ class View(group.View):
     """
 
     list_params = params.copy()
-    list_params['list_action'] = (redirects.getRequestRedirectForRole, 
-                                  'club_member')
+    list_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getRequestRedirectForRole(entity, 'club_member')
+    }
     list_params['list_description'] = ugettext('Choose a club to ' 
                                                'apply to become a Club Member.')
 

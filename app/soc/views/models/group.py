@@ -25,6 +25,7 @@ __authors__ = [
 
 from django import forms
 from django import http
+from django.utils import simplejson
 from django.utils.translation import ugettext
 
 from soc.logic import cleaning
@@ -100,6 +101,9 @@ class View(presence.View):
        }
 
     new_params['role_views'] = {}
+
+    new_params['public_field_keys'] = ["name", "link_id", "short_name"]
+    new_params['public_field_names'] = ["Name", "Link ID", "Short name"]
 
     params = dicts.merge(params, new_params, sub_merge=True)
 
@@ -262,59 +266,43 @@ class View(presence.View):
     filter = {
         'group': group_entity,
         'role': role_names,
-        'status': 'new'
         }
 
     # create the list parameters
-    inc_req_params = request_view.getParams()
+    req_params = request_view.getParams()
 
     # define the list redirect action to the request processing page
-    inc_req_params['list_action'] = (redirects.getProcessRequestRedirect, None)
-    inc_req_params['list_description'] = ugettext(
-        "An overview of the %(name)s's incoming requests." % params)
+    req_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getProcessRequestRedirect(entity, None)
+    }
+    req_params['public_field_ignore'] = ['for']
+    req_params['list_description'] = ugettext(
+        "An overview of the %(name)s's invites and requests." % params)
 
-    inc_req_content = list_helper.getListContent(
-        request, inc_req_params, filter, idx=0)
+    return self.list(request, access_type, page_name=page_name,
+                     params=req_params, filter=filter, **kwargs)
 
-    # list all outstanding invites
-    filter = {
-        'group': group_entity,
-        'role': role_names,
-        'status': 'group_accepted'
+  def getListRolesData(self, request, list_params, group_entity):
+    """Returns the list data for listRoles.
+    """
+
+    idx = request.GET.get('idx', '')
+    idx = int(idx) if idx.isdigit() else -1
+
+    if not 0 <= idx < len(list_params):
+        return responses.jsonErrorResponse(request, "idx not valid")
+
+    # create the filter
+    fields= {
+        'scope' : group_entity,
+        'status': 'active'
         }
 
-    # create the list parameters
-    out_inv_params = request_view.getParams()
+    params = list_params[idx]
+    contents = list_helper.getListData(request, params, fields)
 
-    # define the list redirect action to the request processing page
-    out_inv_params['list_action'] = (redirects.getProcessRequestRedirect, None)
-    out_inv_params['list_description'] = ugettext(
-        "An overview of the %(name)s's outstanding invites." % params)
-
-    out_inv_content = list_helper.getListContent(
-        request, out_inv_params, filter, idx=1)
-
-    # list all ignored requests
-    filter = {
-        'group': group_entity,
-        'role': role_names,
-        'status': 'ignored'
-        }
-
-    # create the list parameters
-    ignored_params = request_view.getParams()
-
-    # define the list redirect action to the request processing page
-    ignored_params['list_action'] = (redirects.getProcessRequestRedirect, None)
-    ignored_params['list_description'] = ugettext(
-        "An overview of the %(name)s's ignored requests." % params)
-
-    ignored_content = list_helper.getListContent(
-        request, ignored_params, filter, idx=2)
-
-    contents = [inc_req_content, out_inv_content, ignored_content]
-
-    return self._list(request, params, contents, page_name)
+    json = simplejson.dumps(contents)
+    return responses.jsonResponse(request, json)
 
   @decorators.merge_params
   @decorators.check_access
@@ -333,36 +321,34 @@ class View(presence.View):
     # set the pagename to include the link_id
     page_name = '%s %s' % (page_name, kwargs['link_id'])
 
-    # get the group from the request
-    group_logic = params['logic']
-
-    group_entity = group_logic.getFromKeyFields(kwargs)
-
-    # create the filter
-    filter = {
-        'scope' : group_entity,
-        'status': 'active'
-        }
-
     role_views = params['role_views']
-    contents = []
-    index = 0
 
-    # for each role we create a separate list
-    for role_name in role_views.keys():
+    lists_params = []
+
+    for role_name in sorted(role_views.keys()):
       # create the list parameters
       list_params = role_views[role_name].getParams().copy()
 
-      list_params['list_action'] = (redirects.getManageRedirect, list_params)
+      list_params['public_row_extra'] = lambda entity: {
+          'link': redirects.getManageRedirect(entity, list_params)
+      }
       list_params['list_description'] = ugettext(
           "An overview of the %s for this %s." % (
           list_params['name_plural'], params['name']))
 
-      new_list_content = list_helper.getListContent(
-          request, list_params, filter, idx=index)
+      lists_params.append(list_params)
 
-      contents += [new_list_content]
+    if request.GET.get('fmt') == 'json':
+      group_logic = params['logic']
+      group_entity = group_logic.getFromKeyFields(kwargs)
+      return self.getListRolesData(request, lists_params, group_entity)
 
+    contents = []
+
+    index = 0
+    for list_params in lists_params:
+      list = list_helper.getListGenerator(request, list_params, idx=index)
+      contents.append(list)
       index += 1
 
     # call the _list method from base.View to show the list
@@ -454,8 +440,6 @@ class View(presence.View):
       # add the items together
       menu['items'] = doc_items + group_items
       menu['group'] = params['name_plural']
-      menu['collapse'] = 'collapse' if group_entity.status == 'inactive' \
-          else ''
 
       # append this as a new menu
       menus.append(menu)

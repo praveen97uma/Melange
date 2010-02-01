@@ -243,6 +243,26 @@ class View(base.View):
 
     new_params['public_template'] = 'modules/ghop/task/public.html'
 
+    def render(entities):
+      two = [i.name for i in entities[:2]]
+      result = ", ".join(two)
+      size = len(entities) - 2
+      return result if size > 0 else "%s + %d" % (result, size)
+
+    new_params['public_field_extra'] = lambda entity: {
+        "difficulty": entity.difficulty[0].tag,
+        "task_type": ", ".join(entity.task_type),
+        "mentors": render(db.get(entity.mentors)),
+    }
+    new_params['public_field_keys'] = [
+        "title", "difficulty", "task_type",
+        "time_to_complete", "status", "mentors",
+    ]
+    new_params['public_field_names'] = [
+        "Title", "Difficulty", "Type",
+        "Time To Complete", "Status", "Mentors",
+    ]
+
     params = dicts.merge(params, new_params, sub_merge=True)
 
     super(View, self).__init__(params=params)
@@ -731,9 +751,10 @@ class View(base.View):
       up_params['list_heading'] = 'modules/ghop/task/approve/heading.html'
       up_params['list_row'] = 'modules/ghop/task/approve/row.html'
 
-    up_params['list_action'] = (redirects.getPublicRedirect,
-                                up_params)
-
+    up_params['public_row_entity'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, up_params)
+    }
+# TODO(LIST)
     up_params['list_description'] = ugettext(
        'List of Unapproved tasks.')
 
@@ -759,8 +780,9 @@ class View(base.View):
     aup_params['list_heading'] = 'modules/ghop/task/approve/heading.html'
     aup_params['list_row'] = 'modules/ghop/task/approve/row.html'
 
-    aup_params['list_action'] = (redirects.getPublicRedirect,
-                                 aup_params)
+    aup_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, aup_params)
+    }
 
     aup_params['list_description'] = ugettext(
        'List of Approved but Unpublished tasks.')
@@ -787,8 +809,9 @@ class View(base.View):
     ap_params['list_heading'] = 'modules/ghop/task/list/heading.html'
     ap_params['list_row'] = 'modules/ghop/task/list/row.html'
 
-    ap_params['list_action'] = (redirects.getPublicRedirect,
-                                ap_params)
+    ap_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, ap_params)
+    }
 
     ap_params['list_description'] = ugettext(
        'List of Published tasks.')
@@ -1368,9 +1391,10 @@ class View(base.View):
     task_params['list_heading'] = 'modules/ghop/task/search/heading.html'
     task_params['list_row'] = 'modules/ghop/task/search/row.html'
 
-    task_params['list_action'] = (redirects.getPublicRedirect,
-                                  task_params)
-
+    task_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, task_params)
+    }
+# TODO(LIST)
     task_params['list_description'] = ugettext(
        'Search results: ')
 

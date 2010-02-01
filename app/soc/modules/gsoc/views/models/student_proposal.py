@@ -28,6 +28,7 @@ import time
 
 from django import forms
 from django import http
+from django.utils import simplejson
 from django.utils.translation import ugettext
 
 from soc.logic import cleaning
@@ -152,6 +153,17 @@ class View(base.View):
     new_params['review_template'] = 'soc/student_proposal/review.html'
     new_params['review_after_deadline_template'] = \
         'soc/student_proposal/review_after_deadline.html'
+
+    new_params['public_field_extra'] = lambda entity: {
+        "student": entity.scope.name(),
+        "organization_name": entity.org.name,
+    }
+    new_params['public_field_keys'] = [
+        "title", "student", "organization_name", "last_modified_on",
+    ]
+    new_params['public_field_names'] = [
+        "Title", "Student", "Organization Name", "Last Modified On",
+    ]
 
     params = dicts.merge(params, new_params)
 
@@ -502,12 +514,38 @@ class View(base.View):
     list_params = org_view.view.getParams().copy()
     list_params['list_description'] = ('List of %(name_plural)s you can send '
         'your proposal to.') % list_params
-    list_params['list_action'] = (redirects.getStudentProposalRedirect,
+    list_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getStudentProposalRedirect(entity,
         {'student_key': student_entity.key().id_or_name(),
             'url_name': params['url_name']})
+    }
 
     return self.list(request, access_type=access_type, page_name=page_name,
                      params=list_params, filter=filter, **kwargs)
+
+  def getListSelfData(self, request, list_params, ip_params, scope_path):
+    """Returns the listSelf data.
+    """
+
+    student_entity = student_logic.logic.getFromKeyName(scope_path)
+    fields = {'scope' : student_entity}
+
+    idx = request.GET.get('idx', '')
+    idx = int(idx) if idx.isdigit() else -1
+
+    if idx == 0:
+      fields['status'] = ['new', 'pending', 'accepted', 'rejected']
+      params = list_params
+    elif idx == 1:
+      fields['status'] = 'invalid'
+      params = ip_params
+    else:
+      return responses.jsonErrorResponse(request, "idx not valid")
+
+    contents = lists.getListData(request, params, fields, 'public')
+    json = simplejson.dumps(contents)
+
+    return responses.jsonResponse(request, json)
 
   @decorators.merge_params
   @decorators.check_access
@@ -520,18 +558,13 @@ class View(base.View):
     """
 
     context = {}
-    student_entity = student_logic.logic.getFromKeyName(kwargs['scope_path'])
-
-    filter = {'scope' : student_entity,
-              'status': ['new', 'pending', 'accepted', 'rejected']}
 
     list_params = params.copy()
     list_params['list_description'] = \
         'List of my %(name_plural)s.' % list_params
-    list_params['list_action'] = (redirects.getPublicRedirect, list_params)
-
-    valid_list = lists.getListContent(
-        request, list_params, filter, idx=0)
+    list_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, list_params)
+    }
 
     ip_params = list_params.copy() # ineligible proposals
 
@@ -539,22 +572,19 @@ class View(base.View):
         ip_params['name_plural'])
 
     ip_params['list_description'] = description
-    ip_params['list_action'] = (redirects.getPublicRedirect, ip_params)
+    ip_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getPublicRedirect(entity, ip_params)
+    }
 
-    filter = {'scope' : student_entity,
-              'status': 'invalid'}
+    if request.GET.get('fmt') == 'json':
+      scope_path = kwargs['scope_path']
+      return self.getListSelfData(request, list_params, ip_params, scope_path)
 
-    ip_list = lists.getListContent(
-        request, ip_params, filter, idx=1, need_content=True)
+    valid_list = lists.getListGenerator(request, list_params, idx=0)
+    ip_list = lists.getListGenerator(request, ip_params, idx=1)
 
-    contents = []
-    # fill contents with all the needed lists
-    contents.append(valid_list)
+    contents = [valid_list, ip_list]
 
-    if ip_list != None:
-      contents.append(ip_list)
-
-    # call the _list method from base to display the list
     return self._list(request, list_params, contents, page_name, context)
 
   @decorators.merge_params

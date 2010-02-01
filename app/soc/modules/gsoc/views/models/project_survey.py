@@ -92,6 +92,19 @@ class View(survey.View):
     new_params['manage_student_project_row'] = \
         'soc/project_survey/list/row_manage_student_project.html'
 
+    new_params['public_field_extra'] = lambda entity: {
+        "path": entity.scope_path + '/' + entity.link_id ,
+        "created_by": entity.author.link_id,
+    }
+    new_params['public_field_keys'] = [
+        "path", "title", "link_id", "is_featured",
+        "created_by", "created", "modified",
+    ]
+    new_params['public_field_names'] = [
+        "Path", "Title", "Link ID", "Featured",
+        "Created By", "Created On", "Modified",
+    ]
+
     params = dicts.merge(params, new_params, sub_merge=True)
 
     super(View, self).__init__(params=params)
@@ -254,16 +267,16 @@ class View(survey.View):
     redirect_dict = {'survey': survey,
                      'params': params}
 
-    student_project_params['list_action'] = (
-        redirects.getTakeProjectSurveyRedirect, redirect_dict)
+    student_project_params['public_row_extra'] = lambda entity: {
+        'link': redirects.getTakeProjectSurveyRedirect(entity, redirect_dict)
+    }
+
     student_project_params['list_description'] = (
         "Select a %s for which to fill in the %s named %s" %(
             student_project_params['name'], params['name'], survey.title))
 
-    content = lists.getListContent(request, student_project_params, fields)
-    contents = [content]
-
-    return self._list(request, student_project_params, contents, page_name)
+    return self.list(request, 'any_access', page_name=page_name,
+                     params=student_project_params)
 
   def _getResultsViewRecordFields(self, survey, allowed_to_read):
     """Get the Results View filter for ProjectSurveyRecords.
